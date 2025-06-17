@@ -3,44 +3,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { useState, useEffect } from "react";
-
-interface CompanyData {
-  name: string;
-  address: string;
-  phone: string;
-  email: string;
-  website: string;
-  taxId: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  unit: string;
-}
-
-interface QuoteItem {
-  productId: string;
-  quantity: number;
-  price: number;
-  total: number;
-}
-
-interface QuoteData {
-  quoteNumber: string;
-  clientName: string;
-  clientEmail: string;
-  clientAddress: string;
-  date: string;
-  validUntil: string;
-  items: QuoteItem[];
-  notes: string;
-  subtotal: number;
-  tax: number;
-  total: number;
-}
+import QuoteHeader from "./quote/QuoteHeader";
+import ClientSection from "./quote/ClientSection";
+import ItemsTable from "./quote/ItemsTable";
+import TotalsSection from "./quote/TotalsSection";
+import NotesSection from "./quote/NotesSection";
+import QuoteFooter from "./quote/QuoteFooter";
+import { CompanyData, Product, QuoteData } from "./quote/types";
 
 interface QuotePreviewProps {
   quoteData: QuoteData;
@@ -69,11 +38,6 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
       setProducts(JSON.parse(savedProducts));
     }
   }, []);
-
-  const getProductName = (productId: string) => {
-    const product = products.find(p => p.id === productId);
-    return product ? product.name : "Unknown Product";
-  };
 
   const generatePDF = async () => {
     const printContent = document.getElementById('quote-preview');
@@ -260,89 +224,12 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
       <Card className="max-w-4xl mx-auto">
         <CardContent className="p-0" id="quote-preview">
           <div className="quote-container p-8">
-            {/* Header */}
-            <div className="header">
-              <div className="company-info">
-                <h1 className="text-3xl font-bold text-blue-600 mb-2">{companyData.name || "Your Company"}</h1>
-                {companyData.address && <p className="text-sm text-gray-600 mb-1">{companyData.address}</p>}
-                {companyData.phone && <p className="text-sm text-gray-600 mb-1">Phone: {companyData.phone}</p>}
-                {companyData.email && <p className="text-sm text-gray-600 mb-1">Email: {companyData.email}</p>}
-                {companyData.website && <p className="text-sm text-gray-600">Website: {companyData.website}</p>}
-              </div>
-              
-              <div className="quote-info text-right">
-                <h2 className="text-4xl font-bold text-gray-900 mb-2">QUOTATION</h2>
-                <p className="quote-number text-lg font-semibold mb-2">#{quoteData.quoteNumber}</p>
-                <p className="text-sm text-gray-600 mb-1">Date: {new Date(quoteData.date).toLocaleDateString()}</p>
-                <p className="text-sm text-gray-600">Valid Until: {new Date(quoteData.validUntil).toLocaleDateString()}</p>
-              </div>
-            </div>
-
-            {/* Client Information */}
-            <div className="client-section">
-              <h3 className="text-lg font-semibold mb-3 text-gray-900">Quote To:</h3>
-              <div className="client-box bg-gray-50 p-5 rounded-lg border">
-                <p className="client-name font-semibold text-gray-900 mb-2">{quoteData.clientName}</p>
-                {quoteData.clientEmail && <p className="client-details text-sm text-gray-600 mb-1">{quoteData.clientEmail}</p>}
-                {quoteData.clientAddress && <p className="client-details text-sm text-gray-600 whitespace-pre-line">{quoteData.clientAddress}</p>}
-              </div>
-            </div>
-
-            {/* Items Table */}
-            <div className="items-section">
-              <table className="items-table w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-300 p-3 text-left font-semibold text-gray-700">Item</th>
-                    <th className="border border-gray-300 p-3 text-center font-semibold text-gray-700">Quantity</th>
-                    <th className="border border-gray-300 p-3 text-right font-semibold text-gray-700">Unit Price</th>
-                    <th className="border border-gray-300 p-3 text-right font-semibold text-gray-700">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {quoteData.items.map((item, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="border border-gray-300 p-3 text-gray-900">{getProductName(item.productId)}</td>
-                      <td className="border border-gray-300 p-3 text-center text-gray-900">{item.quantity}</td>
-                      <td className="border border-gray-300 p-3 text-right text-gray-900">${item.price.toFixed(2)}</td>
-                      <td className="border border-gray-300 p-3 text-right font-semibold text-gray-900">${item.total.toFixed(2)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Totals */}
-            <div className="totals-section flex justify-end">
-              <div className="totals-box w-80 border border-gray-300 rounded-lg overflow-hidden">
-                <div className="totals-row flex justify-between p-4 border-b border-gray-200">
-                  <span className="text-gray-700">Subtotal:</span>
-                  <span className="text-gray-900 font-medium">${quoteData.subtotal.toFixed(2)}</span>
-                </div>
-                <div className="totals-row flex justify-between p-4 border-b border-gray-200">
-                  <span className="text-gray-700">Tax (10%):</span>
-                  <span className="text-gray-900 font-medium">${quoteData.tax.toFixed(2)}</span>
-                </div>
-                <div className="totals-row flex justify-between p-4 bg-gray-50 font-bold text-lg">
-                  <span className="text-gray-900">Total:</span>
-                  <span className="text-gray-900">${quoteData.total.toFixed(2)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Notes */}
-            {quoteData.notes && (
-              <div className="notes-section">
-                <h3 className="text-lg font-semibold mb-3 text-gray-900">Notes:</h3>
-                <div className="notes-content text-sm text-gray-600 whitespace-pre-line leading-relaxed">{quoteData.notes}</div>
-              </div>
-            )}
-
-            {/* Footer */}
-            <div className="footer mt-10 pt-6 border-t border-gray-300 text-center text-sm text-gray-500">
-              <p className="mb-2 font-medium">Thank you for your business!</p>
-              {companyData.taxId && <p>Tax ID: {companyData.taxId}</p>}
-            </div>
+            <QuoteHeader companyData={companyData} quoteData={quoteData} />
+            <ClientSection quoteData={quoteData} />
+            <ItemsTable quoteData={quoteData} products={products} />
+            <TotalsSection quoteData={quoteData} />
+            <NotesSection quoteData={quoteData} />
+            <QuoteFooter companyData={companyData} />
           </div>
         </CardContent>
       </Card>
