@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Trash2, Eye, FileText } from "lucide-react";
 import QuotePreview from "./QuotePreview";
+import { validateAddress, formatAddress, AddressData } from "../utils/addressValidator";
 
 interface Product {
   id: string;
@@ -43,6 +44,12 @@ const QuoteGenerator = () => {
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [addressData, setAddressData] = useState<AddressData>({
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+  });
   const [quoteData, setQuoteData] = useState<QuoteData>({
     quoteNumber: `Q-${Date.now()}`,
     clientName: "",
@@ -67,6 +74,12 @@ const QuoteGenerator = () => {
   useEffect(() => {
     calculateTotals();
   }, [quoteData.items]);
+
+  useEffect(() => {
+    // Update clientAddress when addressData changes
+    const formattedAddress = formatAddress(addressData);
+    setQuoteData(prev => ({ ...prev, clientAddress: formattedAddress }));
+  }, [addressData]);
 
   const calculateTotals = () => {
     const subtotal = quoteData.items.reduce((sum, item) => sum + item.total, 0);
@@ -109,11 +122,36 @@ const QuoteGenerator = () => {
     setQuoteData(prev => ({ ...prev, items: newItems }));
   };
 
+  const handleAddressChange = (field: keyof AddressData, value: string) => {
+    setAddressData(prev => ({ ...prev, [field]: value }));
+  };
+
   const saveQuote = () => {
+    if (!validateAddress(addressData)) {
+      toast({
+        title: "Invalid Address",
+        description: "Please enter a valid address with street, city, state, and zip code.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const quotes = JSON.parse(localStorage.getItem("quotes") || "[]");
     quotes.push({ ...quoteData, id: Date.now().toString() });
     localStorage.setItem("quotes", JSON.stringify(quotes));
     toast({ title: "Quote saved successfully!" });
+  };
+
+  const handlePreview = () => {
+    if (!validateAddress(addressData)) {
+      toast({
+        title: "Invalid Address",
+        description: "Please enter a valid address before previewing.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setShowPreview(true);
   };
 
   if (showPreview) {
@@ -128,7 +166,7 @@ const QuoteGenerator = () => {
           <p className="text-gray-600">Create professional quotations for your clients</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setShowPreview(true)}>
+          <Button variant="outline" onClick={handlePreview}>
             <Eye size={20} className="mr-2" />
             Preview
           </Button>
@@ -191,14 +229,35 @@ const QuoteGenerator = () => {
               />
             </div>
 
-            <div>
+            <div className="space-y-4">
               <Label>Client Address</Label>
-              <Textarea
-                value={quoteData.clientAddress}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, clientAddress: e.target.value }))}
-                placeholder="Client address"
-                rows={3}
-              />
+              <div className="space-y-2">
+                <Input
+                  value={addressData.street}
+                  onChange={(e) => handleAddressChange("street", e.target.value)}
+                  placeholder="Street Address"
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <Input
+                    value={addressData.city}
+                    onChange={(e) => handleAddressChange("city", e.target.value)}
+                    placeholder="City"
+                  />
+                  <Input
+                    value={addressData.state}
+                    onChange={(e) => handleAddressChange("state", e.target.value)}
+                    placeholder="State"
+                  />
+                </div>
+                <Input
+                  value={addressData.zipCode}
+                  onChange={(e) => handleAddressChange("zipCode", e.target.value)}
+                  placeholder="ZIP Code"
+                />
+              </div>
+              {!validateAddress(addressData) && (addressData.street || addressData.city || addressData.state || addressData.zipCode) && (
+                <p className="text-sm text-red-600">Please enter a valid address format</p>
+              )}
             </div>
           </CardContent>
         </Card>
