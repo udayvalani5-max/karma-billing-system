@@ -47,84 +47,95 @@ const CompanySettings = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 lg:p-6">
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-900">Company Settings</h2>
-        <p className="text-gray-600">Configure your company information for quotations</p>
+        <h2 className="text-2xl lg:text-3xl font-bold text-gray-900">Company Settings</h2>
+        <p className="text-gray-600 text-sm lg:text-base">Configure your company information for quotations</p>
       </div>
 
-      <Card className="max-w-2xl">
+      <Card className="max-w-full lg:max-w-2xl">
         <CardHeader>
-          <CardTitle>Company Information</CardTitle>
+          <CardTitle className="text-lg lg:text-xl">Company Information</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardContent className="space-y-4 lg:space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="name">Company Name *</Label>
+              <Label htmlFor="name" className="text-sm lg:text-base">Company Name *</Label>
               <Input
                 id="name"
                 value={companyData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
                 placeholder="Your Company Name"
+                className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="email">Email *</Label>
+              <Label htmlFor="email" className="text-sm lg:text-base">Email *</Label>
               <Input
                 id="email"
                 type="email"
                 value={companyData.email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="company@example.com"
+                className="mt-1"
               />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="address">Address</Label>
+            <Label htmlFor="address" className="text-sm lg:text-base">Address</Label>
             <Textarea
               id="address"
               value={companyData.address}
               onChange={(e) => handleChange("address", e.target.value)}
               placeholder="Complete business address"
               rows={3}
+              className="mt-1 resize-none"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone" className="text-sm lg:text-base">Phone</Label>
               <Input
                 id="phone"
                 value={companyData.phone}
                 onChange={(e) => handleChange("phone", e.target.value)}
                 placeholder="+1 (555) 123-4567"
+                className="mt-1"
               />
             </div>
             <div>
-              <Label htmlFor="website">Website</Label>
+              <Label htmlFor="website" className="text-sm lg:text-base">Website</Label>
               <Input
                 id="website"
                 value={companyData.website}
                 onChange={(e) => handleChange("website", e.target.value)}
                 placeholder="www.yourcompany.com"
+                className="mt-1"
               />
             </div>
           </div>
 
           <div>
-            <Label htmlFor="taxId">Tax ID / Registration Number</Label>
+            <Label htmlFor="taxId" className="text-sm lg:text-base">Tax ID / Registration Number</Label>
             <Input
               id="taxId"
               value={companyData.taxId}
               onChange={(e) => handleChange("taxId", e.target.value)}
               placeholder="Tax identification number"
+              className="mt-1"
             />
           </div>
 
-          <Button onClick={handleSave} className="w-full md:w-auto">
-            Save Company Settings
-          </Button>
+          <div className="pt-4">
+            <Button 
+              onClick={handleSave} 
+              className="w-full lg:w-auto px-6 py-2"
+            >
+              Save Company Settings
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
