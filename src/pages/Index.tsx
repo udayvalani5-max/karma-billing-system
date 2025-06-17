@@ -1,11 +1,30 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import CompanySettings from "@/components/CompanySettings";
+import ProductsManagement from "@/components/ProductsManagement";
+import QuoteGenerator from "@/components/QuoteGenerator";
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState("quotes");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "company":
+        return <CompanySettings />;
+      case "products":
+        return <ProductsManagement />;
+      case "quotes":
+      default:
+        return <QuoteGenerator />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="flex min-h-screen bg-gray-100">
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <div className="flex-1 overflow-auto">
+        {renderContent()}
       </div>
     </div>
   );
