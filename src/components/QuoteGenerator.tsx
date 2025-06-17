@@ -1,44 +1,14 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Trash2, Eye, FileText } from "lucide-react";
+import { Eye, FileText } from "lucide-react";
 import QuotePreview from "./QuotePreview";
+import QuoteDetailsForm from "./quote/QuoteDetailsForm";
+import ClientInformationForm from "./quote/ClientInformationForm";
+import QuoteItemsForm from "./quote/QuoteItemsForm";
 import { validateAddress, formatAddress, AddressData } from "../utils/addressValidator";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  unit: string;
-}
-
-interface QuoteItem {
-  productId: string;
-  quantity: number;
-  price: number;
-  total: number;
-}
-
-interface QuoteData {
-  quoteNumber: string;
-  clientName: string;
-  clientEmail: string;
-  clientAddress: string;
-  date: string;
-  validUntil: string;
-  items: QuoteItem[];
-  notes: string;
-  subtotal: number;
-  tax: number;
-  total: number;
-}
+import { Product, QuoteData, QuoteItem } from "./quote/types";
 
 const QuoteGenerator = () => {
   const { toast } = useToast();
@@ -89,6 +59,14 @@ const QuoteGenerator = () => {
     setQuoteData(prev => ({ ...prev, subtotal, tax, total }));
   };
 
+  const handleQuoteUpdate = (field: keyof QuoteData, value: any) => {
+    setQuoteData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddressChange = (field: keyof AddressData, value: string) => {
+    setAddressData(prev => ({ ...prev, [field]: value }));
+  };
+
   const addItem = () => {
     const newItem: QuoteItem = {
       productId: "",
@@ -120,10 +98,6 @@ const QuoteGenerator = () => {
   const removeItem = (index: number) => {
     const newItems = quoteData.items.filter((_, i) => i !== index);
     setQuoteData(prev => ({ ...prev, items: newItems }));
-  };
-
-  const handleAddressChange = (field: keyof AddressData, value: string) => {
-    setAddressData(prev => ({ ...prev, [field]: value }));
   };
 
   const saveQuote = () => {
@@ -178,202 +152,27 @@ const QuoteGenerator = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Quote Details */}
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle>Quote Details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label>Quote Number</Label>
-              <Input
-                value={quoteData.quoteNumber}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, quoteNumber: e.target.value }))}
-              />
-            </div>
-            
-            <div>
-              <Label>Date</Label>
-              <Input
-                type="date"
-                value={quoteData.date}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, date: e.target.value }))}
-              />
-            </div>
-            
-            <div>
-              <Label>Valid Until</Label>
-              <Input
-                type="date"
-                value={quoteData.validUntil}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, validUntil: e.target.value }))}
-              />
-            </div>
+        <div className="space-y-6">
+          <QuoteDetailsForm 
+            quoteData={quoteData}
+            onUpdate={handleQuoteUpdate}
+          />
+          <ClientInformationForm 
+            quoteData={quoteData}
+            addressData={addressData}
+            onQuoteUpdate={handleQuoteUpdate}
+            onAddressUpdate={handleAddressChange}
+          />
+        </div>
 
-            <div>
-              <Label>Client Name</Label>
-              <Input
-                value={quoteData.clientName}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, clientName: e.target.value }))}
-                placeholder="Client name"
-              />
-            </div>
-
-            <div>
-              <Label>Client Email</Label>
-              <Input
-                type="email"
-                value={quoteData.clientEmail}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, clientEmail: e.target.value }))}
-                placeholder="client@example.com"
-              />
-            </div>
-
-            <div className="space-y-4">
-              <Label>Client Address</Label>
-              <div className="space-y-2">
-                <Input
-                  value={addressData.street}
-                  onChange={(e) => handleAddressChange("street", e.target.value)}
-                  placeholder="Street Address"
-                />
-                <div className="grid grid-cols-2 gap-2">
-                  <Input
-                    value={addressData.city}
-                    onChange={(e) => handleAddressChange("city", e.target.value)}
-                    placeholder="City"
-                  />
-                  <Input
-                    value={addressData.state}
-                    onChange={(e) => handleAddressChange("state", e.target.value)}
-                    placeholder="State"
-                  />
-                </div>
-                <Input
-                  value={addressData.zipCode}
-                  onChange={(e) => handleAddressChange("zipCode", e.target.value)}
-                  placeholder="ZIP Code"
-                />
-              </div>
-              {!validateAddress(addressData) && (addressData.street || addressData.city || addressData.state || addressData.zipCode) && (
-                <p className="text-sm text-red-600">Please enter a valid address format</p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Quote Items */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              Quote Items
-              <Button onClick={addItem} size="sm">
-                <Plus size={16} className="mr-2" />
-                Add Item
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {quoteData.items.map((item, index) => (
-                <div key={index} className="border rounded-lg p-4 bg-gray-50">
-                  <div className="grid grid-cols-12 gap-4 items-end">
-                    <div className="col-span-4">
-                      <Label>Product</Label>
-                      <Select
-                        value={item.productId}
-                        onValueChange={(value) => updateItem(index, 'productId', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select product" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {products.map((product) => (
-                            <SelectItem key={product.id} value={product.id}>
-                              {product.name} - ${product.price}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="col-span-2">
-                      <Label>Quantity</Label>
-                      <Input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
-                      />
-                    </div>
-                    
-                    <div className="col-span-2">
-                      <Label>Price</Label>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        value={item.price}
-                        onChange={(e) => updateItem(index, 'price', parseFloat(e.target.value) || 0)}
-                      />
-                    </div>
-                    
-                    <div className="col-span-3">
-                      <Label>Total</Label>
-                      <Input
-                        value={`$${item.total.toFixed(2)}`}
-                        readOnly
-                        className="bg-gray-100"
-                      />
-                    </div>
-                    
-                    <div className="col-span-1">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => removeItem(index)}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-              {quoteData.items.length === 0 && (
-                <p className="text-gray-500 text-center py-8">No items added yet</p>
-              )}
-            </div>
-
-            {/* Totals */}
-            <div className="mt-6 border-t pt-4">
-              <div className="space-y-2 max-w-sm ml-auto">
-                <div className="flex justify-between">
-                  <span>Subtotal:</span>
-                  <span>${quoteData.subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tax (10%):</span>
-                  <span>${quoteData.tax.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-lg border-t pt-2">
-                  <span>Total:</span>
-                  <span>${quoteData.total.toFixed(2)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Notes */}
-            <div className="mt-6">
-              <Label>Notes</Label>
-              <Textarea
-                value={quoteData.notes}
-                onChange={(e) => setQuoteData(prev => ({ ...prev, notes: e.target.value }))}
-                placeholder="Additional notes or terms"
-                rows={3}
-              />
-            </div>
-          </CardContent>
-        </Card>
+        <QuoteItemsForm 
+          quoteData={quoteData}
+          products={products}
+          onQuoteUpdate={handleQuoteUpdate}
+          onAddItem={addItem}
+          onUpdateItem={updateItem}
+          onRemoveItem={removeItem}
+        />
       </div>
     </div>
   );
