@@ -3,12 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { useState, useEffect } from "react";
-import QuoteHeader from "./quote/QuoteHeader";
-import ClientSection from "./quote/ClientSection";
-import ItemsTable from "./quote/ItemsTable";
-import TotalsSection from "./quote/TotalsSection";
-import NotesSection from "./quote/NotesSection";
-import QuoteFooter from "./quote/QuoteFooter";
 import { CompanyData, Product, QuoteData } from "./quote/types";
 
 interface QuotePreviewProps {
@@ -320,157 +314,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
               </style>
             </head>
             <body>
-              <div class="container">
-                <div class="header">
-                  <div class="logo-section">
-                    <div class="logo">
-                      <img src="/lovable-uploads/28281ec9-ba9b-4a7d-b2a3-8156d8ad8087.png" alt="Krishna Furnishing Logo">
-                    </div>
-                    <div class="company-details">
-                      <div class="company-name">${companyData.name || "KRISHNA FURNISHING"}</div>
-                      <div class="company-info">
-                        ${companyData.address || "PLOT-141, SURAT, GUJARAT - 395001"}<br>
-                        ${companyData.email || "KRISHANAFURNISHING403@GMAIL.COM"}<br>
-                        ${companyData.phone || "+91 99045-39869"} | GSTIN: ${companyData.taxId || "24BAHPK7431H1ZS"}
-                      </div>
-                    </div>
-                    <div class="quotation-details">
-                      <div class="quotation-title">Quotation</div>
-                      <div class="quotation-number"><strong>Ref:</strong> ${quoteData.quoteNumber}</div>
-                      <div class="quotation-date"><strong>Date:</strong> ${new Date(quoteData.date).toLocaleDateString()}</div>
-                      <div class="quotation-validity"><strong>Valid Until:</strong> ${new Date(quoteData.validUntil).toLocaleDateString()}</div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="client-section">
-                  <div class="client-details">
-                    <div class="quote-to">
-                      <div class="section-title"><strong>Quotation For</strong></div>
-                      <div class="client-content">
-                        <strong>${quoteData.clientName || "CLIENT NAME"}</strong><br>
-                        ${quoteData.clientEmail || ""}<br>
-                        ${quoteData.clientAddress || ""}
-                      </div>
-                    </div>
-                    <div class="ship-to">
-                      <div class="section-title">Ship To</div>
-                      <div class="client-content">
-                        <strong>${quoteData.clientName || "CLIENT NAME"}</strong><br>
-                        ${quoteData.clientEmail || ""}<br>
-                        ${quoteData.clientAddress || ""}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <table>
-                  <thead>
-                    <tr>
-                      <th>SR</th>
-                      <th style="width: 40%;">PRODUCT DESCRIPTION</th>
-                      <th>HSN/SAC</th>
-                      <th>QTY</th>
-                      <th>RATE</th>
-                      <th>IGST Rate(%)</th>
-                      <th>IGST Amount</th>
-                      <th>TOTAL</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${quoteData.items.map((item, index) => {
-                      const product = products.find(p => p.id === item.productId);
-                      const igstRate = 18;
-                      const igstAmount = (item.price * item.quantity * igstRate) / 100;
-                      return `
-                        <tr>
-                          <td>${index + 1}</td>
-                          <td>
-                            <strong>${product?.name || "PRODUCT"}</strong><br>
-                            ${product?.description || ""}
-                          </td>
-                          <td>7607</td>
-                          <td>${item.quantity} NOS</td>
-                          <td>₹${item.price.toFixed(2)}</td>
-                          <td>18.00</td>
-                          <td>₹${igstAmount.toFixed(2)}</td>
-                          <td>₹${item.total.toFixed(2)}</td>
-                        </tr>
-                      `;
-                    }).join('')}
-                  </tbody>
-                </table>
-                
-                <div class="terms-and-totals">
-                  <div class="terms-section">
-                    <div class="terms-title">TERM AND CONDITION:-</div>
-                    <ol class="terms-list">
-                      <li>PERIOD WITHIN 2 TO 4 WEEKS AFTER RECEIPT OF P.O.</li>
-                      <li>PAYMENT WITHIN 7 DAYS AFTER WORK</li>
-                      ${quoteData.notes ? `<li>${quoteData.notes}</li>` : ''}
-                    </ol>
-                  </div>
-                  
-                  <div class="totals-section">
-                    <table class="amount-table">
-                      <tr>
-                        <th>Taxable Amount</th>
-                        <td>₹${quoteData.subtotal.toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                        <th>Transportation charge</th>
-                        <td>₹0.00</td>
-                      </tr>
-                      <tr>
-                        <th>Add- CGST</th>
-                        <td>₹${(quoteData.tax / 2).toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                        <th>Add- SGST</th>
-                        <td>₹${(quoteData.tax / 2).toFixed(2)}</td>
-                      </tr>
-                      <tr>
-                        <th>Tax Amount: GST</th>
-                        <td>₹${quoteData.tax.toFixed(2)}</td>
-                      </tr>
-                      <tr class="total-row">
-                        <th>Total Amount</th>
-                        <td>₹${quoteData.total.toFixed(2)}</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-                
-                <div class="bank-details-horizontal">
-                  <div class="bank-title">BANK DETAIL</div>
-                  <table class="bank-table">
-                    <thead>
-                      <tr>
-                        <th>Account Holder Name</th>
-                        <th>Account No.</th>
-                        <th>IFSC No.</th>
-                        <th>Bank Name</th>
-                        <th>Bank Branch Name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>KRISHNAFURNISHING</td>
-                        <td>01230110420756</td>
-                        <td>VARA0289012</td>
-                        <td>The Varachha Co.op.Bank</td>
-                        <td>Yogi chock</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                
-                <div class="footer">
-                  <div class="signature">
-                    FOR, ${companyData.name || "KRISHNA FURNISHING"}
-                  </div>
-                </div>
-              </div>
+              ${printContent.innerHTML}
             </body>
           </html>
         `);
@@ -495,13 +339,543 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
 
       <Card className="max-w-4xl mx-auto">
         <CardContent className="p-0" id="quote-preview">
-          <div className="quote-container p-8">
-            <QuoteHeader companyData={companyData} quoteData={quoteData} />
-            <ClientSection quoteData={quoteData} />
-            <ItemsTable quoteData={quoteData} products={products} />
-            <TotalsSection quoteData={quoteData} />
-            <NotesSection quoteData={quoteData} />
-            <QuoteFooter companyData={companyData} />
+          <div className="container" style={{
+            maxWidth: '800px',
+            margin: '20px auto',
+            padding: '40px',
+            backgroundColor: 'white',
+            boxShadow: '0 5px 15px rgba(0,0,0,0.08)',
+            borderRadius: '8px',
+            fontFamily: 'Roboto, Helvetica Neue, sans-serif',
+            color: '#222222',
+            lineHeight: '1.6'
+          }}>
+            <div className="header" style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '40px',
+              flexWrap: 'wrap'
+            }}>
+              <div className="logo-section" style={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%'
+              }}>
+                <div className="logo" style={{
+                  width: '120px',
+                  marginRight: '20px'
+                }}>
+                  <img src="/lovable-uploads/28281ec9-ba9b-4a7d-b2a3-8156d8ad8087.png" alt="Krishna Furnishing Logo" style={{
+                    width: '100%',
+                    height: 'auto'
+                  }} />
+                </div>
+                <div className="company-details" style={{
+                  flexGrow: 1
+                }}>
+                  <div className="company-name" style={{
+                    fontSize: '24px',
+                    fontWeight: '700',
+                    color: '#102695',
+                    marginBottom: '5px'
+                  }}>{companyData.name || "KRISHNA FURNISHING"}</div>
+                  <div className="company-info" style={{
+                    fontSize: '13px',
+                    color: '#222222',
+                    lineHeight: '1.4'
+                  }}>
+                    {companyData.address || "PLOT-141, SURAT, GUJARAT - 395001"}<br />
+                    {companyData.email || "KRISHANAFURNISHING403@GMAIL.COM"}<br />
+                    {companyData.phone || "+91 99045-39869"} | GSTIN: {companyData.taxId || "24BAHPK7431H1ZS"}
+                  </div>
+                </div>
+                <div className="quotation-details" style={{
+                  minWidth: '250px',
+                  textAlign: 'right',
+                  padding: '15px',
+                  backgroundColor: '#f7f9fa',
+                  borderRadius: '6px',
+                  marginLeft: '20px'
+                }}>
+                  <div className="quotation-title" style={{
+                    textTransform: 'uppercase',
+                    fontSize: '22px',
+                    fontWeight: '700',
+                    letterSpacing: '2px',
+                    color: '#102695',
+                    marginBottom: '10px'
+                  }}>Quotation</div>
+                  <div className="quotation-number" style={{
+                    fontSize: '13px',
+                    margin: '5px 0'
+                  }}><strong>Ref:</strong> {quoteData.quoteNumber}</div>
+                  <div className="quotation-date" style={{
+                    fontSize: '13px',
+                    margin: '5px 0'
+                  }}><strong>Date:</strong> {new Date(quoteData.date).toLocaleDateString()}</div>
+                  <div className="quotation-validity" style={{
+                    fontSize: '13px',
+                    margin: '5px 0'
+                  }}><strong>Valid Until:</strong> {new Date(quoteData.validUntil).toLocaleDateString()}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="client-section" style={{
+              marginBottom: '40px'
+            }}>
+              <div className="client-details" style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginBottom: '30px'
+              }}>
+                <div className="quote-to" style={{
+                  width: '48%'
+                }}>
+                  <div className="section-title" style={{
+                    fontWeight: '500',
+                    color: '#102695',
+                    marginBottom: '10px',
+                    textTransform: 'uppercase',
+                    fontSize: '12px',
+                    letterSpacing: '1px'
+                  }}><strong>Quotation For</strong></div>
+                  <div className="client-content" style={{
+                    fontSize: '13px',
+                    backgroundColor: '#f7f9fa',
+                    padding: '15px',
+                    borderRadius: '6px',
+                    lineHeight: '1.6'
+                  }}>
+                    <strong>{quoteData.clientName || "CLIENT NAME"}</strong><br />
+                    {quoteData.clientEmail || ""}<br />
+                    {quoteData.clientAddress || ""}
+                  </div>
+                </div>
+                <div className="ship-to" style={{
+                  width: '48%'
+                }}>
+                  <div className="section-title" style={{
+                    fontWeight: '500',
+                    color: '#102695',
+                    marginBottom: '10px',
+                    textTransform: 'uppercase',
+                    fontSize: '12px',
+                    letterSpacing: '1px'
+                  }}>Ship To</div>
+                  <div className="client-content" style={{
+                    fontSize: '13px',
+                    backgroundColor: '#f7f9fa',
+                    padding: '15px',
+                    borderRadius: '6px',
+                    lineHeight: '1.6'
+                  }}>
+                    <strong>{quoteData.clientName || "CLIENT NAME"}</strong><br />
+                    {quoteData.clientEmail || ""}<br />
+                    {quoteData.clientAddress || ""}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              marginBottom: '40px'
+            }}>
+              <thead style={{
+                backgroundColor: '#102695',
+                color: 'white'
+              }}>
+                <tr>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>SR</th>
+                  <th style={{
+                    width: '40%',
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>PRODUCT DESCRIPTION</th>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>HSN/SAC</th>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>QTY</th>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>RATE</th>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>IGST Rate(%)</th>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>IGST Amount</th>
+                  <th style={{
+                    textAlign: 'left',
+                    padding: '12px 15px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
+                  }}>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                {quoteData.items.map((item, index) => {
+                  const product = products.find(p => p.id === item.productId);
+                  const igstRate = 18;
+                  const igstAmount = (item.price * item.quantity * igstRate) / 100;
+                  return (
+                    <tr key={index} style={{
+                      backgroundColor: index % 2 === 1 ? '#f7f9fa' : 'white'
+                    }}>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>{index + 1}</td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>
+                        <strong>{product?.name || "PRODUCT"}</strong><br />
+                        {product?.description || ""}
+                      </td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>7607</td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>{item.quantity} NOS</td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>₹{item.price.toFixed(2)}</td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>18.00</td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>₹{igstAmount.toFixed(2)}</td>
+                      <td style={{
+                        padding: '12px 15px',
+                        borderBottom: '1px solid #bdc3c7',
+                        fontSize: '13px'
+                      }}>₹{item.total.toFixed(2)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            
+            <div className="terms-and-totals" style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '30px'
+            }}>
+              <div className="terms-section" style={{
+                width: '45%'
+              }}>
+                <div className="terms-title" style={{
+                  fontWeight: '600',
+                  color: '#222222',
+                  marginBottom: '15px',
+                  fontSize: '14px',
+                  textTransform: 'uppercase'
+                }}>TERM AND CONDITION:-</div>
+                <ol className="terms-list" style={{
+                  paddingLeft: '20px',
+                  margin: 0,
+                  fontSize: '13px'
+                }}>
+                  <li style={{
+                    marginBottom: '8px'
+                  }}>PERIOD WITHIN 2 TO 4 WEEKS AFTER RECEIPT OF P.O.</li>
+                  <li style={{
+                    marginBottom: '8px'
+                  }}>PAYMENT WITHIN 7 DAYS AFTER WORK</li>
+                  {quoteData.notes && <li style={{
+                    marginBottom: '8px'
+                  }}>{quoteData.notes}</li>}
+                </ol>
+              </div>
+              
+              <div className="totals-section" style={{
+                width: '50%'
+              }}>
+                <table className="amount-table" style={{
+                  width: '100%',
+                  borderCollapse: 'collapse'
+                }}>
+                  <tbody>
+                    <tr>
+                      <th style={{
+                        padding: '10px',
+                        textAlign: 'left',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#f8d27a',
+                        color: '#222222',
+                        fontWeight: '600',
+                        width: '60%'
+                      }}>Taxable Amount</th>
+                      <td style={{
+                        padding: '10px',
+                        textAlign: 'right',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#fff'
+                      }}>₹{quoteData.subtotal.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <th style={{
+                        padding: '10px',
+                        textAlign: 'left',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#f8d27a',
+                        color: '#222222',
+                        fontWeight: '600'
+                      }}>Transportation charge</th>
+                      <td style={{
+                        padding: '10px',
+                        textAlign: 'right',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#fff'
+                      }}>₹0.00</td>
+                    </tr>
+                    <tr>
+                      <th style={{
+                        padding: '10px',
+                        textAlign: 'left',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#f8d27a',
+                        color: '#222222',
+                        fontWeight: '600'
+                      }}>Add- CGST</th>
+                      <td style={{
+                        padding: '10px',
+                        textAlign: 'right',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#fff'
+                      }}>₹{(quoteData.tax / 2).toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <th style={{
+                        padding: '10px',
+                        textAlign: 'left',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#f8d27a',
+                        color: '#222222',
+                        fontWeight: '600'
+                      }}>Add- SGST</th>
+                      <td style={{
+                        padding: '10px',
+                        textAlign: 'right',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#fff'
+                      }}>₹{(quoteData.tax / 2).toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                      <th style={{
+                        padding: '10px',
+                        textAlign: 'left',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#f8d27a',
+                        color: '#222222',
+                        fontWeight: '600'
+                      }}>Tax Amount: GST</th>
+                      <td style={{
+                        padding: '10px',
+                        textAlign: 'right',
+                        border: '1px solid #bdc3c7',
+                        backgroundColor: '#fff'
+                      }}>₹{quoteData.tax.toFixed(2)}</td>
+                    </tr>
+                    <tr className="total-row">
+                      <th style={{
+                        padding: '10px',
+                        textAlign: 'left',
+                        border: '1px solid #bdc3c7',
+                        fontWeight: '700',
+                        backgroundColor: '#f8d27a',
+                        color: '#222222'
+                      }}>Total Amount</th>
+                      <td style={{
+                        padding: '10px',
+                        textAlign: 'right',
+                        border: '1px solid #bdc3c7',
+                        fontWeight: '700',
+                        backgroundColor: '#f8d27a'
+                      }}>₹{quoteData.total.toFixed(2)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div className="bank-details-horizontal" style={{
+              marginTop: '30px',
+              marginBottom: '30px'
+            }}>
+              <div className="bank-title" style={{
+                fontWeight: '600',
+                color: '#222222',
+                marginBottom: '15px',
+                fontSize: '14px',
+                textTransform: 'uppercase'
+              }}>BANK DETAIL</div>
+              <table className="bank-table" style={{
+                width: '100%',
+                borderCollapse: 'collapse'
+              }}>
+                <thead>
+                  <tr>
+                    <th style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px',
+                      backgroundColor: '#f8d27a',
+                      color: '#222222',
+                      fontWeight: '600'
+                    }}>Account Holder Name</th>
+                    <th style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px',
+                      backgroundColor: '#f8d27a',
+                      color: '#222222',
+                      fontWeight: '600'
+                    }}>Account No.</th>
+                    <th style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px',
+                      backgroundColor: '#f8d27a',
+                      color: '#222222',
+                      fontWeight: '600'
+                    }}>IFSC No.</th>
+                    <th style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px',
+                      backgroundColor: '#f8d27a',
+                      color: '#222222',
+                      fontWeight: '600'
+                    }}>Bank Name</th>
+                    <th style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px',
+                      backgroundColor: '#f8d27a',
+                      color: '#222222',
+                      fontWeight: '600'
+                    }}>Bank Branch Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px'
+                    }}>KRISHNAFURNISHING</td>
+                    <td style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px'
+                    }}>01230110420756</td>
+                    <td style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px'
+                    }}>VARA0289012</td>
+                    <td style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px'
+                    }}>The Varachha Co.op.Bank</td>
+                    <td style={{
+                      padding: '8px',
+                      textAlign: 'center',
+                      border: '1px solid #ddd',
+                      fontSize: '13px'
+                    }}>Yogi chock</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="footer" style={{
+              marginTop: '40px',
+              paddingTop: '20px',
+              borderTop: '1px solid #bdc3c7',
+              display: 'flex',
+              justifyContent: 'flex-end'
+            }}>
+              <div className="signature" style={{
+                marginTop: '60px',
+                borderTop: '1px solid #222222',
+                paddingTop: '10px',
+                width: '200px',
+                textAlign: 'center',
+                fontSize: '13px'
+              }}>
+                FOR, {companyData.name || "KRISHNA FURNISHING"}
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
