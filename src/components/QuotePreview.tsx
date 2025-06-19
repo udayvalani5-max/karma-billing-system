@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
@@ -32,6 +31,46 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
       setProducts(JSON.parse(savedProducts));
     }
   }, []);
+
+  // Calculate amounts based on user specifications
+  const calculateAmounts = () => {
+    // Taxable Amount = sum of (rate * qty) for each product
+    const taxableAmount = quoteData.items.reduce((sum, item) => {
+      return sum + (item.price * item.quantity);
+    }, 0);
+
+    // Transportation charge (fixed at 0 as per template)
+    const transportationCharge = 0;
+
+    // Calculate IGST for each product (18% of product total) and sum them
+    const totalIgstAmount = quoteData.items.reduce((sum, item) => {
+      const productTotal = item.price * item.quantity;
+      const igstAmount = (productTotal * 18) / 100;
+      return sum + igstAmount;
+    }, 0);
+
+    // Tax Amount GST = total IGST amount
+    const taxAmountGst = totalIgstAmount;
+
+    // CGST and SGST are each half of Tax Amount GST
+    const cgst = taxAmountGst / 2;
+    const sgst = taxAmountGst / 2;
+
+    // Total Amount = Taxable Amount + Transportation charge + Tax Amount GST
+    const totalAmount = taxableAmount + transportationCharge + taxAmountGst;
+
+    return {
+      taxableAmount,
+      transportationCharge,
+      totalIgstAmount,
+      taxAmountGst,
+      cgst,
+      sgst,
+      totalAmount
+    };
+  };
+
+  const amounts = calculateAmounts();
 
   const generatePDF = async () => {
     const printContent = document.getElementById('quote-preview');
@@ -560,7 +599,9 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 {quoteData.items.map((item, index) => {
                   const product = products.find(p => p.id === item.productId);
                   const igstRate = 18;
-                  const igstAmount = (item.price * item.quantity * igstRate) / 100;
+                  const productTotal = item.price * item.quantity;
+                  const igstAmount = (productTotal * igstRate) / 100;
+                  const totalWithIgst = productTotal + igstAmount;
                   return (
                     <tr key={index} style={{
                       backgroundColor: index % 2 === 1 ? '#f7f9fa' : 'white'
@@ -607,7 +648,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         padding: '12px 15px',
                         borderBottom: '1px solid #bdc3c7',
                         fontSize: '13px'
-                      }}>₹{item.total.toFixed(2)}</td>
+                      }}>₹{totalWithIgst.toFixed(2)}</td>
                     </tr>
                   );
                 })}
@@ -669,7 +710,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         textAlign: 'right',
                         border: '1px solid #bdc3c7',
                         backgroundColor: '#fff'
-                      }}>₹{quoteData.subtotal.toFixed(2)}</td>
+                      }}>₹{amounts.taxableAmount.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <th style={{
@@ -685,7 +726,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         textAlign: 'right',
                         border: '1px solid #bdc3c7',
                         backgroundColor: '#fff'
-                      }}>₹0.00</td>
+                      }}>₹{amounts.transportationCharge.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <th style={{
@@ -701,7 +742,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         textAlign: 'right',
                         border: '1px solid #bdc3c7',
                         backgroundColor: '#fff'
-                      }}>₹{(quoteData.tax / 2).toFixed(2)}</td>
+                      }}>₹{amounts.cgst.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <th style={{
@@ -717,7 +758,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         textAlign: 'right',
                         border: '1px solid #bdc3c7',
                         backgroundColor: '#fff'
-                      }}>₹{(quoteData.tax / 2).toFixed(2)}</td>
+                      }}>₹{amounts.sgst.toFixed(2)}</td>
                     </tr>
                     <tr>
                       <th style={{
@@ -733,7 +774,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         textAlign: 'right',
                         border: '1px solid #bdc3c7',
                         backgroundColor: '#fff'
-                      }}>₹{quoteData.tax.toFixed(2)}</td>
+                      }}>₹{amounts.taxAmountGst.toFixed(2)}</td>
                     </tr>
                     <tr className="total-row">
                       <th style={{
@@ -750,7 +791,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                         border: '1px solid #bdc3c7',
                         fontWeight: '700',
                         backgroundColor: '#f8d27a'
-                      }}>₹{quoteData.total.toFixed(2)}</td>
+                      }}>₹{amounts.totalAmount.toFixed(2)}</td>
                     </tr>
                   </tbody>
                 </table>
