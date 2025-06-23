@@ -23,6 +23,7 @@ const ClientInformationForm = ({
   const [clients, setClients] = useState<ClientData[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredClients, setFilteredClients] = useState<ClientData[]>([]);
+  const [clientGstin, setClientGstin] = useState("");
 
   useEffect(() => {
     const saved = localStorage.getItem("clients");
@@ -51,8 +52,48 @@ const ClientInformationForm = ({
     onAddressUpdate('city', client.city);
     onAddressUpdate('state', client.state);
     onAddressUpdate('zipCode', client.pinCode);
+    setClientGstin(client.gstin || "");
     setShowSuggestions(false);
   };
+
+  const saveClientDetails = () => {
+    if (!quoteData.clientName || !quoteData.clientEmail) return;
+
+    const existingClientIndex = clients.findIndex(
+      client => client.email === quoteData.clientEmail
+    );
+
+    const clientData: ClientData = {
+      id: existingClientIndex >= 0 ? clients[existingClientIndex].id : Date.now().toString(),
+      name: quoteData.clientName,
+      email: quoteData.clientEmail,
+      streetAddress: addressData.street,
+      city: addressData.city,
+      state: addressData.state,
+      pinCode: addressData.zipCode,
+      gstin: clientGstin,
+      createdAt: existingClientIndex >= 0 ? clients[existingClientIndex].createdAt : new Date().toISOString(),
+    };
+
+    let updatedClients;
+    if (existingClientIndex >= 0) {
+      updatedClients = [...clients];
+      updatedClients[existingClientIndex] = clientData;
+    } else {
+      updatedClients = [...clients, clientData];
+    }
+
+    setClients(updatedClients);
+    localStorage.setItem("clients", JSON.stringify(updatedClients));
+  };
+
+  // Auto-save client details when form data changes
+  useEffect(() => {
+    if (quoteData.clientName && quoteData.clientEmail && addressData.street) {
+      const timeoutId = setTimeout(saveClientDetails, 1000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [quoteData.clientName, quoteData.clientEmail, addressData, clientGstin]);
 
   return (
     <Card>
@@ -83,6 +124,9 @@ const ClientInformationForm = ({
                     {client.email && (
                       <p className="text-sm text-gray-600">{client.email}</p>
                     )}
+                    {client.gstin && (
+                      <p className="text-xs text-gray-500">GSTIN: {client.gstin}</p>
+                    )}
                     {client.city && (
                       <p className="text-xs text-gray-500">{client.city}, {client.state}</p>
                     )}
@@ -100,6 +144,15 @@ const ClientInformationForm = ({
             value={quoteData.clientEmail}
             onChange={(e) => onQuoteUpdate('clientEmail', e.target.value)}
             placeholder="client@example.com"
+          />
+        </div>
+
+        <div>
+          <Label>Client GSTIN</Label>
+          <Input
+            value={clientGstin}
+            onChange={(e) => setClientGstin(e.target.value)}
+            placeholder="Enter GSTIN number (optional)"
           />
         </div>
 

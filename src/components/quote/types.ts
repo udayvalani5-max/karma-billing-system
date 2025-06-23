@@ -50,6 +50,7 @@ export interface ClientData {
   city: string;
   state: string;
   pinCode: string;
+  gstin?: string;
   createdAt: string;
 }
 

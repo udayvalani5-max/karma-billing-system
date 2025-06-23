@@ -133,22 +133,29 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .logo-section {
                   display: flex;
-                  align-items: center;
+                  align-items: flex-start;
                   width: 100%;
+                  gap: 20px;
                 }
                 
                 .logo {
-                  width: 120px;
-                  margin-right: 20px;
+                  width: 80px;
+                  height: 80px;
+                  flexShrink: 0;
                 }
                 
                 .logo img {
                   width: 100%;
-                  height: auto;
+                  height: 100%;
+                  objectFit: contain;
                 }
                 
                 .company-details {
                   flex-grow: 1;
+                  minHeight: 80px;
+                  display: flex;
+                  flexDirection: column;
+                  justifyContent: center;
                 }
                 
                 .company-name {
@@ -412,20 +419,27 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
             }}>
               <div className="logo-section" style={{
                 display: 'flex',
-                alignItems: 'center',
-                width: '100%'
+                alignItems: 'flex-start',
+                width: '100%',
+                gap: '20px'
               }}>
                 <div className="logo" style={{
-                  width: '120px',
-                  marginRight: '20px'
+                  width: '80px',
+                  height: '80px',
+                  flexShrink: 0
                 }}>
                   <img src="/lovable-uploads/28281ec9-ba9b-4a7d-b2a3-8156d8ad8087.png" alt="Krishna Furnishing Logo" style={{
                     width: '100%',
-                    height: 'auto'
+                    height: '100%',
+                    objectFit: 'contain'
                   }} />
                 </div>
                 <div className="company-details" style={{
-                  flexGrow: 1
+                  flexGrow: 1,
+                  minHeight: '80px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center'
                 }}>
                   <div className="company-name" style={{
                     fontSize: '24px',
@@ -448,8 +462,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                   textAlign: 'right',
                   padding: '15px',
                   backgroundColor: '#f7f9fa',
-                  borderRadius: '6px',
-                  marginLeft: '20px'
+                  borderRadius: '6px'
                 }}>
                   <div className="quotation-title" style={{
                     textTransform: 'uppercase',
@@ -918,14 +931,14 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
               paddingTop: '20px',
               borderTop: '1px solid #bdc3c7',
               display: 'flex',
-              justifyContent: 'flex-end'
+              justify-content: 'flex-end'
             }}>
               <div className="signature" style={{
                 marginTop: '60px',
                 borderTop: '1px solid #222222',
                 paddingTop: '10px',
                 width: '200px',
-                textAlign: 'center',
+                text-align: 'center',
                 fontSize: '13px'
               }}>
                 FOR, {companyData.name || "KRISHNA FURNISHING"}
