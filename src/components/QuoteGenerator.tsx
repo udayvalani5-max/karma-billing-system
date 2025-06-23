@@ -51,9 +51,21 @@ const QuoteGenerator = () => {
     setQuoteData(prev => ({ ...prev, clientAddress: formattedAddress }));
   }, [addressData]);
 
+  const getProductIgstRate = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    return product ? product.igstRate : 18; // Default to 18% if product not found
+  };
+
   const calculateTotals = () => {
     const subtotal = quoteData.items.reduce((sum, item) => sum + item.total, 0);
-    const tax = subtotal * 0.1; // 10% tax
+    
+    // Calculate tax dynamically based on each product's IGST rate
+    const tax = quoteData.items.reduce((sum, item) => {
+      const igstRate = getProductIgstRate(item.productId);
+      const itemTax = (item.total * igstRate) / 100;
+      return sum + itemTax;
+    }, 0);
+    
     const total = subtotal + tax;
     
     setQuoteData(prev => ({ ...prev, subtotal, tax, total }));
