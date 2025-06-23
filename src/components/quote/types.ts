@@ -33,6 +33,7 @@ export interface QuoteData {
   clientName: string;
   clientEmail: string;
   clientAddress: string;
+  clientGstin?: string;
   date: string;
   validUntil: string;
   items: QuoteItem[];

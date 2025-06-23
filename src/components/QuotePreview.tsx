@@ -36,6 +36,17 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
     }
   }, []);
 
+  // Helper function to get product details
+  const getProductDetails = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    return {
+      name: product?.name || "PRODUCT",
+      description: product?.description || "",
+      hsnSac: product?.hsnSac || "7607",
+      igstRate: product?.igstRate || 18
+    };
+  };
+
   // Helper function to construct full address
   const getFullAddress = (company: CompanyData) => {
     const addressParts = [
@@ -47,31 +58,24 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
     return addressParts.length > 0 ? addressParts.join(', ') : "PLOT-141, SURAT, GUJARAT - 395001";
   };
 
-  // Calculate amounts based on user specifications
+  // Calculate amounts based on dynamic IGST rates
   const calculateAmounts = () => {
-    // Taxable Amount = sum of (rate * qty) for each product
     const taxableAmount = quoteData.items.reduce((sum, item) => {
       return sum + (item.price * item.quantity);
     }, 0);
 
-    // Transportation charge (fixed at 0 as per template)
     const transportationCharge = 0;
 
-    // Calculate IGST for each product (18% of product total) and sum them
     const totalIgstAmount = quoteData.items.reduce((sum, item) => {
+      const productDetails = getProductDetails(item.productId);
       const productTotal = item.price * item.quantity;
-      const igstAmount = (productTotal * 18) / 100;
+      const igstAmount = (productTotal * productDetails.igstRate) / 100;
       return sum + igstAmount;
     }, 0);
 
-    // Tax Amount GST = total IGST amount
     const taxAmountGst = totalIgstAmount;
-
-    // CGST and SGST are each half of Tax Amount GST
     const cgst = taxAmountGst / 2;
     const sgst = taxAmountGst / 2;
-
-    // Total Amount = Taxable Amount + Transportation charge + Tax Amount GST
     const totalAmount = taxableAmount + transportationCharge + taxAmountGst;
 
     return {
@@ -103,22 +107,20 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                   line-height: 1.6;
                   margin: 0;
                   padding: 0;
-                  background-color: #f5f5f5;
+                  background-color: #ffffff;
                 }
                 
                 .container {
                   max-width: 800px;
-                  margin: 20px auto;
+                  margin: 0 auto;
                   padding: 40px;
                   background-color: white;
-                  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-                  border-radius: 8px;
                 }
                 
                 .header {
                   display: flex;
                   justify-content: space-between;
-                  align-items: center;
+                  align-items: flex-start;
                   margin-bottom: 40px;
                   flex-wrap: wrap;
                 }
@@ -131,8 +133,8 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 }
                 
                 .logo {
-                  width: 80px;
-                  height: 80px;
+                  width: 100px;
+                  height: 100px;
                   flex-shrink: 0;
                 }
                 
@@ -144,7 +146,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .company-details {
                   flex-grow: 1;
-                  min-height: 80px;
+                  min-height: 100px;
                   display: flex;
                   flex-direction: column;
                   justify-content: center;
@@ -153,13 +155,13 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 .company-name {
                   font-size: 24px;
                   font-weight: 700;
-                  color: #102695;
+                  color: #1d4ed8;
                   margin-bottom: 5px;
                 }
                 
                 .company-info {
-                  font-size: 13px;
-                  color: #222222;
+                  font-size: 14px;
+                  color: #1f2937;
                   line-height: 1.4;
                 }
                 
@@ -167,26 +169,26 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                   min-width: 250px;
                   text-align: right;
                   padding: 15px;
-                  background-color: #f7f9fa;
+                  background-color: #f9fafb;
                   border-radius: 6px;
                 }
                 
                 .quotation-title {
                   text-transform: uppercase;
-                  font-size: 22px;
+                  font-size: 20px;
                   font-weight: 700;
                   letter-spacing: 2px;
-                  color: #102695;
+                  color: #1d4ed8;
                   margin-bottom: 10px;
                 }
                 
                 .quotation-number, .quotation-date, .quotation-validity {
-                  font-size: 13px;
+                  font-size: 14px;
                   margin: 5px 0;
                 }
                 
                 .client-section {
-                  margin-bottom: 40px;
+                  margin-bottom: 30px;
                 }
                 
                 .client-details {
@@ -200,17 +202,17 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 }
                 
                 .section-title {
-                  font-weight: 500;
-                  color: #102695;
-                  margin-bottom: 10px;
+                  font-weight: 600;
+                  color: #1d4ed8;
+                  margin-bottom: 8px;
                   text-transform: uppercase;
                   font-size: 12px;
                   letter-spacing: 1px;
                 }
                 
                 .client-content {
-                  font-size: 13px;
-                  background-color: #f7f9fa;
+                  font-size: 14px;
+                  background-color: #f9fafb;
                   padding: 15px;
                   border-radius: 6px;
                   line-height: 1.6;
@@ -219,35 +221,36 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 table {
                   width: 100%;
                   border-collapse: collapse;
-                  margin-bottom: 40px;
+                  margin-bottom: 30px;
                 }
                 
                 thead {
-                  background-color: #102695;
+                  background-color: #1d4ed8;
                   color: white;
                 }
                 
                 th {
                   text-align: left;
-                  padding: 12px 15px;
+                  padding: 12px;
                   font-size: 12px;
                   font-weight: 500;
                   letter-spacing: 0.5px;
                   text-transform: uppercase;
+                  border: 1px solid #374151;
                 }
                 
                 td {
-                  padding: 12px 15px;
-                  border-bottom: 1px solid #bdc3c7;
-                  font-size: 13px;
-                }
-                
-                tr:last-child td {
-                  border-bottom: none;
+                  padding: 12px;
+                  border: 1px solid #d1d5db;
+                  font-size: 14px;
                 }
                 
                 tr:nth-child(even) {
-                  background-color: #f7f9fa;
+                  background-color: #f9fafb;
+                }
+                
+                tr:nth-child(odd) {
+                  background-color: #ffffff;
                 }
                 
                 .terms-and-totals {
@@ -257,7 +260,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 }
                 
                 .terms-section {
-                  width: 45%;
+                  width: 40%;
                 }
                 
                 .totals-section {
@@ -270,31 +273,31 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 }
                 
                 .amount-table th, .amount-table td {
-                  padding: 10px;
+                  padding: 8px 12px;
                   text-align: left;
-                  border: 1px solid #bdc3c7;
+                  border: 1px solid #d1d5db;
                 }
                 
                 .amount-table th {
-                  background-color: #f8d27a;
-                  color: #222222;
+                  background-color: #fde68a;
+                  color: #1f2937;
                   font-weight: 600;
                   width: 60%;
                 }
                 
                 .amount-table td {
                   text-align: right;
-                  background-color: #fff;
+                  background-color: #ffffff;
                 }
                 
                 .amount-table .total-row th, .amount-table .total-row td {
                   font-weight: 700;
-                  background-color: #f8d27a;
+                  background-color: #fde68a;
                 }
                 
                 .terms-title {
                   font-weight: 600;
-                  color: #222222;
+                  color: #1f2937;
                   margin-bottom: 15px;
                   font-size: 14px;
                   text-transform: uppercase;
@@ -303,7 +306,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 .terms-list {
                   padding-left: 20px;
                   margin: 0;
-                  font-size: 13px;
+                  font-size: 14px;
                 }
                 
                 .terms-list li {
@@ -317,7 +320,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .bank-title {
                   font-weight: 600;
-                  color: #222222;
+                  color: #1f2937;
                   margin-bottom: 15px;
                   font-size: 14px;
                   text-transform: uppercase;
@@ -331,31 +334,31 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 .bank-table th, .bank-table td {
                   padding: 8px;
                   text-align: center;
-                  border: 1px solid #ddd;
-                  font-size: 13px;
+                  border: 1px solid #d1d5db;
+                  font-size: 14px;
                 }
                 
                 .bank-table th {
-                  background-color: #f8d27a;
-                  color: #222222;
+                  background-color: #fde68a;
+                  color: #1f2937;
                   font-weight: 600;
                 }
                 
                 .footer {
                   margin-top: 40px;
                   padding-top: 20px;
-                  border-top: 1px solid #bdc3c7;
+                  border-top: 1px solid #d1d5db;
                   display: flex;
                   justify-content: flex-end;
                 }
                 
                 .signature {
                   margin-top: 60px;
-                  border-top: 1px solid #222222;
+                  border-top: 1px solid #1f2937;
                   padding-top: 10px;
                   width: 200px;
                   text-align: center;
-                  font-size: 13px;
+                  font-size: 14px;
                 }
                 
                 @media print {
@@ -390,18 +393,18 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
 
       <Card className="max-w-4xl mx-auto">
         <CardContent className="p-0" id="quote-preview">
-          <div className="container max-w-4xl mx-auto p-10 bg-white shadow-lg rounded-lg font-sans text-gray-800 leading-relaxed">
+          <div className="container max-w-4xl mx-auto p-10 bg-white font-sans text-gray-800 leading-relaxed">
             {/* Header */}
-            <div className="flex justify-between items-center mb-10 flex-wrap">
+            <div className="flex justify-between items-start mb-10 flex-wrap">
               <div className="flex items-start w-full gap-5">
-                <div className="w-20 h-20 flex-shrink-0">
+                <div className="w-25 h-25 flex-shrink-0">
                   <img 
                     src="/lovable-uploads/28281ec9-ba9b-4a7d-b2a3-8156d8ad8087.png" 
                     alt="Krishna Furnishing Logo" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="flex-grow min-h-20 flex flex-col justify-center">
+                <div className="flex-grow min-h-25 flex flex-col justify-center">
                   <div className="text-2xl font-bold text-blue-700 mb-1">
                     {companyData.name || "KRISHNA FURNISHING"}
                   </div>
@@ -425,65 +428,66 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
             </div>
             
             {/* Client Section */}
-            <div className="mb-10">
+            <div className="mb-8">
               <div className="flex justify-between mb-8">
                 <div className="w-1/2 pr-4">
-                  <div className="font-medium text-blue-700 mb-2 uppercase text-sm tracking-wide">
+                  <div className="font-semibold text-blue-700 mb-2 uppercase text-sm tracking-wide">
                     <strong>Quotation For</strong>
                   </div>
                   <div className="text-sm bg-gray-50 p-4 rounded leading-relaxed">
                     <strong>{quoteData.clientName || "CLIENT NAME"}</strong><br />
-                    {quoteData.clientEmail || ""}<br />
-                    {quoteData.clientAddress || ""}
+                    {quoteData.clientEmail && <>{quoteData.clientEmail}<br /></>}
+                    {quoteData.clientAddress && <>{quoteData.clientAddress}<br /></>}
+                    {quoteData.clientGstin && <>GSTIN: {quoteData.clientGstin}</>}
                   </div>
                 </div>
                 <div className="w-1/2 pl-4">
-                  <div className="font-medium text-blue-700 mb-2 uppercase text-sm tracking-wide">
+                  <div className="font-semibold text-blue-700 mb-2 uppercase text-sm tracking-wide">
                     Ship To
                   </div>
                   <div className="text-sm bg-gray-50 p-4 rounded leading-relaxed">
                     <strong>{quoteData.clientName || "CLIENT NAME"}</strong><br />
-                    {quoteData.clientEmail || ""}<br />
-                    {quoteData.clientAddress || ""}
+                    {quoteData.clientEmail && <>{quoteData.clientEmail}<br /></>}
+                    {quoteData.clientAddress && <>{quoteData.clientAddress}<br /></>}
+                    {quoteData.clientGstin && <>GSTIN: {quoteData.clientGstin}</>}
                   </div>
                 </div>
               </div>
             </div>
             
             {/* Products Table */}
-            <table className="w-full border-collapse mb-10">
+            <table className="w-full border-collapse mb-8">
               <thead className="bg-blue-700 text-white">
                 <tr>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">SR</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase w-2/5">PRODUCT DESCRIPTION</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">HSN/SAC</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">QTY</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">RATE</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">IGST Rate(%)</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">IGST Amount</th>
-                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">TOTAL</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">SR</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase w-2/5 border border-gray-600">PRODUCT DESCRIPTION</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">HSN/SAC</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">QTY</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">RATE</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">IGST Rate(%)</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">IGST Amount</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase border border-gray-600">TOTAL</th>
                 </tr>
               </thead>
               <tbody>
                 {quoteData.items.map((item, index) => {
-                  const product = products.find(p => p.id === item.productId);
-                  const igstRate = 18;
+                  const productDetails = getProductDetails(item.productId);
                   const productTotal = item.price * item.quantity;
-                  const igstAmount = (productTotal * igstRate) / 100;
+                  const igstAmount = (productTotal * productDetails.igstRate) / 100;
                   const totalWithIgst = productTotal + igstAmount;
                   return (
                     <tr key={index} className={index % 2 === 1 ? "bg-gray-50" : "bg-white"}>
-                      <td className="p-3 border-b border-gray-300 text-sm">{index + 1}</td>
-                      <td className="p-3 border-b border-gray-300 text-sm">
-                        <strong>{product?.name || "PRODUCT"}</strong><br />
-                        {product?.description || ""}
+                      <td className="p-3 border border-gray-300 text-sm">{index + 1}</td>
+                      <td className="p-3 border border-gray-300 text-sm">
+                        <strong>{productDetails.name}</strong><br />
+                        {productDetails.description && <span className="text-gray-600">{productDetails.description}</span>}
                       </td>
-                      <td className="p-3 border-b border-gray-300 text-sm">7607</td>
-                      <td className="p-3 border-b border-gray-300 text-sm">{item.quantity} NOS</td>
-                      <td className="p-3 border-b border-gray-300 text-sm">₹{item.price.toFixed(2)}</td>
-                      <td className="p-3 border-b border-gray-300 text-sm">18.00</td>
-                      <td className="p-3 border-b border-gray-300 text-sm">₹{igstAmount.toFixed(2)}</td>
-                      <td className="p-3 border-b border-gray-300 text-sm">₹{totalWithIgst.toFixed(2)}</td>
+                      <td className="p-3 border border-gray-300 text-sm">{productDetails.hsnSac}</td>
+                      <td className="p-3 border border-gray-300 text-sm">{item.quantity} NOS</td>
+                      <td className="p-3 border border-gray-300 text-sm">₹{item.price.toFixed(2)}</td>
+                      <td className="p-3 border border-gray-300 text-sm">{productDetails.igstRate.toFixed(2)}</td>
+                      <td className="p-3 border border-gray-300 text-sm">₹{igstAmount.toFixed(2)}</td>
+                      <td className="p-3 border border-gray-300 text-sm">₹{totalWithIgst.toFixed(2)}</td>
                     </tr>
                   );
                 })}
