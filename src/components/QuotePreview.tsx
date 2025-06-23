@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
@@ -96,18 +97,9 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
             <head>
               <title>Quotation ${quoteData.quoteNumber}</title>
               <style>
-                :root {
-                  --primary: #102695;
-                  --secondary: #ecf0f1;
-                  --accent: #102695;
-                  --text: #222222;
-                  --light-gray: #f7f9fa;
-                  --border: #bdc3c7;
-                }
-                
                 body {
                   font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-                  color: var(--text);
+                  color: #222222;
                   line-height: 1.6;
                   margin: 0;
                   padding: 0;
@@ -141,33 +133,33 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 .logo {
                   width: 80px;
                   height: 80px;
-                  flexShrink: 0;
+                  flex-shrink: 0;
                 }
                 
                 .logo img {
                   width: 100%;
                   height: 100%;
-                  objectFit: contain;
+                  object-fit: contain;
                 }
                 
                 .company-details {
                   flex-grow: 1;
-                  minHeight: 80px;
+                  min-height: 80px;
                   display: flex;
-                  flexDirection: column;
-                  justifyContent: center;
+                  flex-direction: column;
+                  justify-content: center;
                 }
                 
                 .company-name {
                   font-size: 24px;
                   font-weight: 700;
-                  color: var(--primary);
+                  color: #102695;
                   margin-bottom: 5px;
                 }
                 
                 .company-info {
                   font-size: 13px;
-                  color: var(--text);
+                  color: #222222;
                   line-height: 1.4;
                 }
                 
@@ -175,9 +167,8 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                   min-width: 250px;
                   text-align: right;
                   padding: 15px;
-                  background-color: var(--light-gray);
+                  background-color: #f7f9fa;
                   border-radius: 6px;
-                  margin-left: 20px;
                 }
                 
                 .quotation-title {
@@ -185,7 +176,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                   font-size: 22px;
                   font-weight: 700;
                   letter-spacing: 2px;
-                  color: var(--primary);
+                  color: #102695;
                   margin-bottom: 10px;
                 }
                 
@@ -210,7 +201,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .section-title {
                   font-weight: 500;
-                  color: var(--accent);
+                  color: #102695;
                   margin-bottom: 10px;
                   text-transform: uppercase;
                   font-size: 12px;
@@ -219,7 +210,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .client-content {
                   font-size: 13px;
-                  background-color: var(--light-gray);
+                  background-color: #f7f9fa;
                   padding: 15px;
                   border-radius: 6px;
                   line-height: 1.6;
@@ -232,7 +223,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 }
                 
                 thead {
-                  background-color: var(--primary);
+                  background-color: #102695;
                   color: white;
                 }
                 
@@ -247,7 +238,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 td {
                   padding: 12px 15px;
-                  border-bottom: 1px solid var(--border);
+                  border-bottom: 1px solid #bdc3c7;
                   font-size: 13px;
                 }
                 
@@ -256,7 +247,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 }
                 
                 tr:nth-child(even) {
-                  background-color: var(--light-gray);
+                  background-color: #f7f9fa;
                 }
                 
                 .terms-and-totals {
@@ -281,12 +272,12 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 .amount-table th, .amount-table td {
                   padding: 10px;
                   text-align: left;
-                  border: 1px solid var(--border);
+                  border: 1px solid #bdc3c7;
                 }
                 
                 .amount-table th {
                   background-color: #f8d27a;
-                  color: var(--text);
+                  color: #222222;
                   font-weight: 600;
                   width: 60%;
                 }
@@ -303,7 +294,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .terms-title {
                   font-weight: 600;
-                  color: var(--text);
+                  color: #222222;
                   margin-bottom: 15px;
                   font-size: 14px;
                   text-transform: uppercase;
@@ -326,7 +317,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .bank-title {
                   font-weight: 600;
-                  color: var(--text);
+                  color: #222222;
                   margin-bottom: 15px;
                   font-size: 14px;
                   text-transform: uppercase;
@@ -346,21 +337,21 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                 
                 .bank-table th {
                   background-color: #f8d27a;
-                  color: var(--text);
+                  color: #222222;
                   font-weight: 600;
                 }
                 
                 .footer {
                   margin-top: 40px;
                   padding-top: 20px;
-                  border-top: 1px solid var(--border);
+                  border-top: 1px solid #bdc3c7;
                   display: flex;
                   justify-content: flex-end;
                 }
                 
                 .signature {
                   margin-top: 60px;
-                  border-top: 1px solid var(--text);
+                  border-top: 1px solid #222222;
                   padding-top: 10px;
                   width: 200px;
                   text-align: center;
@@ -399,144 +390,58 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
 
       <Card className="max-w-4xl mx-auto">
         <CardContent className="p-0" id="quote-preview">
-          <div className="container" style={{
-            maxWidth: '800px',
-            margin: '20px auto',
-            padding: '40px',
-            backgroundColor: 'white',
-            boxShadow: '0 5px 15px rgba(0,0,0,0.08)',
-            borderRadius: '8px',
-            fontFamily: 'Roboto, Helvetica Neue, sans-serif',
-            color: '#222222',
-            lineHeight: '1.6'
-          }}>
-            <div className="header" style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '40px',
-              flexWrap: 'wrap'
-            }}>
-              <div className="logo-section" style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                width: '100%',
-                gap: '20px'
-              }}>
-                <div className="logo" style={{
-                  width: '80px',
-                  height: '80px',
-                  flexShrink: 0
-                }}>
-                  <img src="/lovable-uploads/28281ec9-ba9b-4a7d-b2a3-8156d8ad8087.png" alt="Krishna Furnishing Logo" style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain'
-                  }} />
+          <div className="container max-w-4xl mx-auto p-10 bg-white shadow-lg rounded-lg font-sans text-gray-800 leading-relaxed">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-10 flex-wrap">
+              <div className="flex items-start w-full gap-5">
+                <div className="w-20 h-20 flex-shrink-0">
+                  <img 
+                    src="/lovable-uploads/28281ec9-ba9b-4a7d-b2a3-8156d8ad8087.png" 
+                    alt="Krishna Furnishing Logo" 
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-                <div className="company-details" style={{
-                  flexGrow: 1,
-                  minHeight: '80px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center'
-                }}>
-                  <div className="company-name" style={{
-                    fontSize: '24px',
-                    fontWeight: '700',
-                    color: '#102695',
-                    marginBottom: '5px'
-                  }}>{companyData.name || "KRISHNA FURNISHING"}</div>
-                  <div className="company-info" style={{
-                    fontSize: '13px',
-                    color: '#222222',
-                    lineHeight: '1.4'
-                  }}>
+                <div className="flex-grow min-h-20 flex flex-col justify-center">
+                  <div className="text-2xl font-bold text-blue-700 mb-1">
+                    {companyData.name || "KRISHNA FURNISHING"}
+                  </div>
+                  <div className="text-sm text-gray-800 leading-tight">
                     {getFullAddress(companyData)}<br />
                     {companyData.email || "KRISHANAFURNISHING403@GMAIL.COM"}<br />
                     {companyData.phone || "+91 99045-39869"} | GSTIN: {companyData.taxId || "24BAHPK7431H1ZS"}
                   </div>
                 </div>
-                <div className="quotation-details" style={{
-                  minWidth: '250px',
-                  textAlign: 'right',
-                  padding: '15px',
-                  backgroundColor: '#f7f9fa',
-                  borderRadius: '6px'
-                }}>
-                  <div className="quotation-title" style={{
-                    textTransform: 'uppercase',
-                    fontSize: '22px',
-                    fontWeight: '700',
-                    letterSpacing: '2px',
-                    color: '#102695',
-                    marginBottom: '10px'
-                  }}>Quotation</div>
-                  <div className="quotation-number" style={{
-                    fontSize: '13px',
-                    margin: '5px 0'
-                  }}><strong>Ref:</strong> {quoteData.quoteNumber}</div>
-                  <div className="quotation-date" style={{
-                    fontSize: '13px',
-                    margin: '5px 0'
-                  }}><strong>Date:</strong> {new Date(quoteData.date).toLocaleDateString()}</div>
-                  <div className="quotation-validity" style={{
-                    fontSize: '13px',
-                    margin: '5px 0'
-                  }}><strong>Valid Until:</strong> {new Date(quoteData.validUntil).toLocaleDateString()}</div>
+                <div className="min-w-64 text-right p-4 bg-gray-50 rounded">
+                  <div className="uppercase text-xl font-bold tracking-wider text-blue-700 mb-2">
+                    Quotation
+                  </div>
+                  <div className="text-sm space-y-1">
+                    <div><strong>Ref:</strong> {quoteData.quoteNumber}</div>
+                    <div><strong>Date:</strong> {new Date(quoteData.date).toLocaleDateString()}</div>
+                    <div><strong>Valid Until:</strong> {new Date(quoteData.validUntil).toLocaleDateString()}</div>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <div className="client-section" style={{
-              marginBottom: '40px'
-            }}>
-              <div className="client-details" style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: '30px'
-              }}>
-                <div className="quote-to" style={{
-                  width: '48%'
-                }}>
-                  <div className="section-title" style={{
-                    fontWeight: '500',
-                    color: '#102695',
-                    marginBottom: '10px',
-                    textTransform: 'uppercase',
-                    fontSize: '12px',
-                    letterSpacing: '1px'
-                  }}><strong>Quotation For</strong></div>
-                  <div className="client-content" style={{
-                    fontSize: '13px',
-                    backgroundColor: '#f7f9fa',
-                    padding: '15px',
-                    borderRadius: '6px',
-                    lineHeight: '1.6'
-                  }}>
+            {/* Client Section */}
+            <div className="mb-10">
+              <div className="flex justify-between mb-8">
+                <div className="w-1/2 pr-4">
+                  <div className="font-medium text-blue-700 mb-2 uppercase text-sm tracking-wide">
+                    <strong>Quotation For</strong>
+                  </div>
+                  <div className="text-sm bg-gray-50 p-4 rounded leading-relaxed">
                     <strong>{quoteData.clientName || "CLIENT NAME"}</strong><br />
                     {quoteData.clientEmail || ""}<br />
                     {quoteData.clientAddress || ""}
                   </div>
                 </div>
-                <div className="ship-to" style={{
-                  width: '48%'
-                }}>
-                  <div className="section-title" style={{
-                    fontWeight: '500',
-                    color: '#102695',
-                    marginBottom: '10px',
-                    textTransform: 'uppercase',
-                    fontSize: '12px',
-                    letterSpacing: '1px'
-                  }}>Ship To</div>
-                  <div className="client-content" style={{
-                    fontSize: '13px',
-                    backgroundColor: '#f7f9fa',
-                    padding: '15px',
-                    borderRadius: '6px',
-                    lineHeight: '1.6'
-                  }}>
+                <div className="w-1/2 pl-4">
+                  <div className="font-medium text-blue-700 mb-2 uppercase text-sm tracking-wide">
+                    Ship To
+                  </div>
+                  <div className="text-sm bg-gray-50 p-4 rounded leading-relaxed">
                     <strong>{quoteData.clientName || "CLIENT NAME"}</strong><br />
                     {quoteData.clientEmail || ""}<br />
                     {quoteData.clientAddress || ""}
@@ -545,81 +450,18 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
               </div>
             </div>
             
-            <table style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              marginBottom: '40px'
-            }}>
-              <thead style={{
-                backgroundColor: '#102695',
-                color: 'white'
-              }}>
+            {/* Products Table */}
+            <table className="w-full border-collapse mb-10">
+              <thead className="bg-blue-700 text-white">
                 <tr>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>SR</th>
-                  <th style={{
-                    width: '40%',
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>PRODUCT DESCRIPTION</th>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>HSN/SAC</th>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>QTY</th>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>RATE</th>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>IGST Rate(%)</th>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>IGST Amount</th>
-                  <th style={{
-                    textAlign: 'left',
-                    padding: '12px 15px',
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    letterSpacing: '0.5px',
-                    textTransform: 'uppercase'
-                  }}>TOTAL</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">SR</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase w-2/5">PRODUCT DESCRIPTION</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">HSN/SAC</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">QTY</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">RATE</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">IGST Rate(%)</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">IGST Amount</th>
+                  <th className="text-left p-3 text-xs font-medium tracking-wider uppercase">TOTAL</th>
                 </tr>
               </thead>
               <tbody>
@@ -630,317 +472,133 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                   const igstAmount = (productTotal * igstRate) / 100;
                   const totalWithIgst = productTotal + igstAmount;
                   return (
-                    <tr key={index} style={{
-                      backgroundColor: index % 2 === 1 ? '#f7f9fa' : 'white'
-                    }}>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>{index + 1}</td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>
+                    <tr key={index} className={index % 2 === 1 ? "bg-gray-50" : "bg-white"}>
+                      <td className="p-3 border-b border-gray-300 text-sm">{index + 1}</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">
                         <strong>{product?.name || "PRODUCT"}</strong><br />
                         {product?.description || ""}
                       </td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>7607</td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>{item.quantity} NOS</td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>₹{item.price.toFixed(2)}</td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>18.00</td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>₹{igstAmount.toFixed(2)}</td>
-                      <td style={{
-                        padding: '12px 15px',
-                        borderBottom: '1px solid #bdc3c7',
-                        fontSize: '13px'
-                      }}>₹{totalWithIgst.toFixed(2)}</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">7607</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">{item.quantity} NOS</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">₹{item.price.toFixed(2)}</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">18.00</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">₹{igstAmount.toFixed(2)}</td>
+                      <td className="p-3 border-b border-gray-300 text-sm">₹{totalWithIgst.toFixed(2)}</td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
             
-            <div className="terms-and-totals" style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: '30px'
-            }}>
-              <div className="terms-section" style={{
-                width: '45%'
-              }}>
-                <div className="terms-title" style={{
-                  fontWeight: '600',
-                  color: '#222222',
-                  marginBottom: '15px',
-                  fontSize: '14px',
-                  textTransform: 'uppercase'
-                }}>TERM AND CONDITION:-</div>
-                <ol className="terms-list" style={{
-                  paddingLeft: '20px',
-                  margin: 0,
-                  fontSize: '13px'
-                }}>
-                  <li style={{
-                    marginBottom: '8px'
-                  }}>PERIOD WITHIN 2 TO 4 WEEKS AFTER RECEIPT OF P.O.</li>
-                  <li style={{
-                    marginBottom: '8px'
-                  }}>PAYMENT WITHIN 7 DAYS AFTER WORK</li>
-                  {quoteData.notes && <li style={{
-                    marginBottom: '8px'
-                  }}>{quoteData.notes}</li>}
+            {/* Terms and Totals */}
+            <div className="flex justify-between mb-8">
+              <div className="w-2/5">
+                <div className="font-semibold text-gray-800 mb-4 text-sm uppercase">
+                  TERM AND CONDITION:-
+                </div>
+                <ol className="pl-5 m-0 text-sm space-y-2">
+                  <li>PERIOD WITHIN 2 TO 4 WEEKS AFTER RECEIPT OF P.O.</li>
+                  <li>PAYMENT WITHIN 7 DAYS AFTER WORK</li>
+                  {quoteData.notes && <li>{quoteData.notes}</li>}
                 </ol>
               </div>
               
-              <div className="totals-section" style={{
-                width: '50%'
-              }}>
-                <table className="amount-table" style={{
-                  width: '100%',
-                  borderCollapse: 'collapse'
-                }}>
+              <div className="w-1/2">
+                <table className="w-full border-collapse">
                   <tbody>
                     <tr>
-                      <th style={{
-                        padding: '10px',
-                        textAlign: 'left',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#f8d27a',
-                        color: '#222222',
-                        fontWeight: '600',
-                        width: '60%'
-                      }}>Taxable Amount</th>
-                      <td style={{
-                        padding: '10px',
-                        textAlign: 'right',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#fff'
-                      }}>₹{amounts.taxableAmount.toFixed(2)}</td>
+                      <th className="p-2 text-left border border-gray-300 bg-yellow-200 text-gray-800 font-semibold w-3/5">
+                        Taxable Amount
+                      </th>
+                      <td className="p-2 text-right border border-gray-300 bg-white">
+                        ₹{amounts.taxableAmount.toFixed(2)}
+                      </td>
                     </tr>
                     <tr>
-                      <th style={{
-                        padding: '10px',
-                        textAlign: 'left',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#f8d27a',
-                        color: '#222222',
-                        fontWeight: '600'
-                      }}>Transportation charge</th>
-                      <td style={{
-                        padding: '10px',
-                        textAlign: 'right',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#fff'
-                      }}>₹{amounts.transportationCharge.toFixed(2)}</td>
+                      <th className="p-2 text-left border border-gray-300 bg-yellow-200 text-gray-800 font-semibold">
+                        Transportation charge
+                      </th>
+                      <td className="p-2 text-right border border-gray-300 bg-white">
+                        ₹{amounts.transportationCharge.toFixed(2)}
+                      </td>
                     </tr>
                     <tr>
-                      <th style={{
-                        padding: '10px',
-                        textAlign: 'left',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#f8d27a',
-                        color: '#222222',
-                        fontWeight: '600'
-                      }}>Add- CGST</th>
-                      <td style={{
-                        padding: '10px',
-                        textAlign: 'right',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#fff'
-                      }}>₹{amounts.cgst.toFixed(2)}</td>
+                      <th className="p-2 text-left border border-gray-300 bg-yellow-200 text-gray-800 font-semibold">
+                        Add- CGST
+                      </th>
+                      <td className="p-2 text-right border border-gray-300 bg-white">
+                        ₹{amounts.cgst.toFixed(2)}
+                      </td>
                     </tr>
                     <tr>
-                      <th style={{
-                        padding: '10px',
-                        textAlign: 'left',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#f8d27a',
-                        color: '#222222',
-                        fontWeight: '600'
-                      }}>Add- SGST</th>
-                      <td style={{
-                        padding: '10px',
-                        textAlign: 'right',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#fff'
-                      }}>₹{amounts.sgst.toFixed(2)}</td>
+                      <th className="p-2 text-left border border-gray-300 bg-yellow-200 text-gray-800 font-semibold">
+                        Add- SGST
+                      </th>
+                      <td className="p-2 text-right border border-gray-300 bg-white">
+                        ₹{amounts.sgst.toFixed(2)}
+                      </td>
                     </tr>
                     <tr>
-                      <th style={{
-                        padding: '10px',
-                        textAlign: 'left',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#f8d27a',
-                        color: '#222222',
-                        fontWeight: '600'
-                      }}>Tax Amount: GST</th>
-                      <td style={{
-                        padding: '10px',
-                        textAlign: 'right',
-                        border: '1px solid #bdc3c7',
-                        backgroundColor: '#fff'
-                      }}>₹{amounts.taxAmountGst.toFixed(2)}</td>
+                      <th className="p-2 text-left border border-gray-300 bg-yellow-200 text-gray-800 font-semibold">
+                        Tax Amount: GST
+                      </th>
+                      <td className="p-2 text-right border border-gray-300 bg-white">
+                        ₹{amounts.taxAmountGst.toFixed(2)}
+                      </td>
                     </tr>
                     <tr className="total-row">
-                      <th style={{
-                        padding: '10px',
-                        textAlign: 'left',
-                        border: '1px solid #bdc3c7',
-                        fontWeight: '700',
-                        backgroundColor: '#f8d27a',
-                        color: '#222222'
-                      }}>Total Amount</th>
-                      <td style={{
-                        padding: '10px',
-                        textAlign: 'right',
-                        border: '1px solid #bdc3c7',
-                        fontWeight: '700',
-                        backgroundColor: '#f8d27a'
-                      }}>₹{amounts.totalAmount.toFixed(2)}</td>
+                      <th className="p-2 text-left border border-gray-300 font-bold bg-yellow-200 text-gray-800">
+                        Total Amount
+                      </th>
+                      <td className="p-2 text-right border border-gray-300 font-bold bg-yellow-200">
+                        ₹{amounts.totalAmount.toFixed(2)}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
             
-            <div className="bank-details-horizontal" style={{
-              marginTop: '30px',
-              marginBottom: '30px'
-            }}>
-              <div className="bank-title" style={{
-                fontWeight: '600',
-                color: '#222222',
-                marginBottom: '15px',
-                fontSize: '14px',
-                textTransform: 'uppercase'
-              }}>BANK DETAIL</div>
-              <table className="bank-table" style={{
-                width: '100%',
-                borderCollapse: 'collapse'
-              }}>
+            {/* Bank Details */}
+            <div className="mt-8 mb-8">
+              <div className="font-semibold text-gray-800 mb-4 text-sm uppercase">
+                BANK DETAIL
+              </div>
+              <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px',
-                      backgroundColor: '#f8d27a',
-                      color: '#222222',
-                      fontWeight: '600'
-                    }}>Account Holder Name</th>
-                    <th style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px',
-                      backgroundColor: '#f8d27a',
-                      color: '#222222',
-                      fontWeight: '600'
-                    }}>Account No.</th>
-                    <th style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px',
-                      backgroundColor: '#f8d27a',
-                      color: '#222222',
-                      fontWeight: '600'
-                    }}>IFSC No.</th>
-                    <th style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px',
-                      backgroundColor: '#f8d27a',
-                      color: '#222222',
-                      fontWeight: '600'
-                    }}>Bank Name</th>
-                    <th style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px',
-                      backgroundColor: '#f8d27a',
-                      color: '#222222',
-                      fontWeight: '600'
-                    }}>Bank Branch Name</th>
+                    <th className="p-2 text-center border border-gray-300 text-sm bg-yellow-200 text-gray-800 font-semibold">
+                      Account Holder Name
+                    </th>
+                    <th className="p-2 text-center border border-gray-300 text-sm bg-yellow-200 text-gray-800 font-semibold">
+                      Account No.
+                    </th>
+                    <th className="p-2 text-center border border-gray-300 text-sm bg-yellow-200 text-gray-800 font-semibold">
+                      IFSC No.
+                    </th>
+                    <th className="p-2 text-center border border-gray-300 text-sm bg-yellow-200 text-gray-800 font-semibold">
+                      Bank Name
+                    </th>
+                    <th className="p-2 text-center border border-gray-300 text-sm bg-yellow-200 text-gray-800 font-semibold">
+                      Bank Branch Name
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px'
-                    }}>KRISHNAFURNISHING</td>
-                    <td style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px'
-                    }}>01230110420756</td>
-                    <td style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px'
-                    }}>VARA0289012</td>
-                    <td style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px'
-                    }}>The Varachha Co.op.Bank</td>
-                    <td style={{
-                      padding: '8px',
-                      textAlign: 'center',
-                      border: '1px solid #ddd',
-                      fontSize: '13px'
-                    }}>Yogi chock</td>
+                    <td className="p-2 text-center border border-gray-300 text-sm">KRISHNAFURNISHING</td>
+                    <td className="p-2 text-center border border-gray-300 text-sm">01230110420756</td>
+                    <td className="p-2 text-center border border-gray-300 text-sm">VARA0289012</td>
+                    <td className="p-2 text-center border border-gray-300 text-sm">The Varachha Co.op.Bank</td>
+                    <td className="p-2 text-center border border-gray-300 text-sm">Yogi chock</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             
-            <div className="footer" style={{
-              marginTop: '40px',
-              paddingTop: '20px',
-              borderTop: '1px solid #bdc3c7',
-              display: 'flex',
-              justify-content: 'flex-end'
-            }}>
-              <div className="signature" style={{
-                marginTop: '60px',
-                borderTop: '1px solid #222222',
-                paddingTop: '10px',
-                width: '200px',
-                text-align: 'center',
-                fontSize: '13px'
-              }}>
+            {/* Footer */}
+            <div className="mt-10 pt-5 border-t border-gray-300 flex justify-end">
+              <div className="mt-16 border-t border-gray-800 pt-2 w-48 text-center text-sm">
                 FOR, {companyData.name || "KRISHNA FURNISHING"}
               </div>
             </div>
