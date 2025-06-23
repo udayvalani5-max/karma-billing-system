@@ -7,11 +7,22 @@ interface QuoteHeaderProps {
 }
 
 const QuoteHeader = ({ companyData, quoteData }: QuoteHeaderProps) => {
+  // Helper function to construct full address
+  const getFullAddress = (company: CompanyData) => {
+    const addressParts = [
+      company.streetAddress,
+      company.city,
+      company.state,
+      company.pinCode
+    ].filter(Boolean);
+    return addressParts.length > 0 ? addressParts.join(', ') : "";
+  };
+
   return (
     <div className="header">
       <div className="company-info">
         <h1 className="text-3xl font-bold text-blue-600 mb-2">{companyData.name || "Your Company"}</h1>
-        {companyData.address && <p className="text-sm text-gray-600 mb-1">{companyData.address}</p>}
+        {getFullAddress(companyData) && <p className="text-sm text-gray-600 mb-1">{getFullAddress(companyData)}</p>}
         {companyData.phone && <p className="text-sm text-gray-600 mb-1">Phone: {companyData.phone}</p>}
         {companyData.email && <p className="text-sm text-gray-600 mb-1">Email: {companyData.email}</p>}
         {companyData.website && <p className="text-sm text-gray-600">Website: {companyData.website}</p>}

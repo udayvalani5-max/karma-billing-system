@@ -12,7 +12,10 @@ interface QuotePreviewProps {
 const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
   const [companyData, setCompanyData] = useState<CompanyData>({
     name: "",
-    address: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    pinCode: "",
     phone: "",
     email: "",
     website: "",
@@ -31,6 +34,17 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
       setProducts(JSON.parse(savedProducts));
     }
   }, []);
+
+  // Helper function to construct full address
+  const getFullAddress = (company: CompanyData) => {
+    const addressParts = [
+      company.streetAddress,
+      company.city,
+      company.state,
+      company.pinCode
+    ].filter(Boolean);
+    return addressParts.length > 0 ? addressParts.join(', ') : "PLOT-141, SURAT, GUJARAT - 395001";
+  };
 
   // Calculate amounts based on user specifications
   const calculateAmounts = () => {
@@ -424,7 +438,7 @@ const QuotePreview = ({ quoteData, onBack }: QuotePreviewProps) => {
                     color: '#222222',
                     lineHeight: '1.4'
                   }}>
-                    {companyData.address || "PLOT-141, SURAT, GUJARAT - 395001"}<br />
+                    {getFullAddress(companyData)}<br />
                     {companyData.email || "KRISHANAFURNISHING403@GMAIL.COM"}<br />
                     {companyData.phone || "+91 99045-39869"} | GSTIN: {companyData.taxId || "24BAHPK7431H1ZS"}
                   </div>
