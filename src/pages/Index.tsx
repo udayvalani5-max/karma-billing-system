@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import CompanySettings from "@/components/CompanySettings";
 import ProductsManagement from "@/components/ProductsManagement";
+import ClientManagement from "@/components/ClientManagement";
+import InvoiceHistory from "@/components/InvoiceHistory";
 import QuoteGenerator from "@/components/QuoteGenerator";
 import LoginPage from "@/components/LoginPage";
 import FirstTimeSetup from "@/components/FirstTimeSetup";
@@ -47,9 +49,24 @@ const Index = () => {
         return <CompanySettings />;
       case "products":
         return <ProductsManagement />;
+      case "clients":
+        return <ClientManagement />;
+      case "history":
+        return <InvoiceHistory />;
       case "quotes":
       default:
         return <QuoteGenerator />;
+    }
+  };
+
+  const getPageTitle = () => {
+    switch (activeTab) {
+      case "company": return "Company Settings";
+      case "products": return "Products Management";
+      case "clients": return "Client Management";
+      case "history": return "Invoice History";
+      case "quotes": 
+      default: return "Quote Generator";
     }
   };
 
@@ -83,10 +100,8 @@ const Index = () => {
         <div className="lg:hidden">
           {/* Mobile header for better responsive experience */}
           <div className="bg-white border-b border-gray-200 p-4">
-            <h2 className="text-lg font-semibold text-gray-900 capitalize">
-              {activeTab === "quotes" ? "Quote Generator" : 
-               activeTab === "products" ? "Products Management" : 
-               "Company Settings"}
+            <h2 className="text-lg font-semibold text-gray-900">
+              {getPageTitle()}
             </h2>
           </div>
         </div>

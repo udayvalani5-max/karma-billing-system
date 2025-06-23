@@ -2,7 +2,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { QuoteData } from './types';
+import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { QuoteData, ClientData } from './types';
 import { validateAddress, AddressData } from '../../utils/addressValidator';
 
 interface ClientInformationFormProps {
@@ -18,19 +20,77 @@ const ClientInformationForm = ({
   onQuoteUpdate, 
   onAddressUpdate 
 }: ClientInformationFormProps) => {
+  const [clients, setClients] = useState<ClientData[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredClients, setFilteredClients] = useState<ClientData[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("clients");
+    if (saved) {
+      setClients(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (quoteData.clientName.length > 0) {
+      const filtered = clients.filter(client =>
+        client.name.toLowerCase().includes(quoteData.clientName.toLowerCase()) ||
+        client.email.toLowerCase().includes(quoteData.clientName.toLowerCase())
+      );
+      setFilteredClients(filtered);
+      setShowSuggestions(filtered.length > 0 && quoteData.clientName.length > 1);
+    } else {
+      setShowSuggestions(false);
+    }
+  }, [quoteData.clientName, clients]);
+
+  const selectClient = (client: ClientData) => {
+    onQuoteUpdate('clientName', client.name);
+    onQuoteUpdate('clientEmail', client.email);
+    onAddressUpdate('street', client.streetAddress);
+    onAddressUpdate('city', client.city);
+    onAddressUpdate('state', client.state);
+    onAddressUpdate('zipCode', client.pinCode);
+    setShowSuggestions(false);
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Client Information</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div>
+        <div className="relative">
           <Label>Client Name</Label>
           <Input
             value={quoteData.clientName}
             onChange={(e) => onQuoteUpdate('clientName', e.target.value)}
-            placeholder="Client name"
+            placeholder="Start typing client name..."
+            onFocus={() => setShowSuggestions(filteredClients.length > 0)}
           />
+          
+          {showSuggestions && (
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
+              {filteredClients.map((client) => (
+                <button
+                  key={client.id}
+                  type="button"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                  onClick={() => selectClient(client)}
+                >
+                  <div>
+                    <p className="font-medium text-gray-900">{client.name}</p>
+                    {client.email && (
+                      <p className="text-sm text-gray-600">{client.email}</p>
+                    )}
+                    {client.city && (
+                      <p className="text-xs text-gray-500">{client.city}, {client.state}</p>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>

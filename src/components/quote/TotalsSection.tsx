@@ -1,11 +1,17 @@
 
-import { QuoteData } from './types';
+import { QuoteData, Product } from './types';
 
 interface TotalsSectionProps {
   quoteData: QuoteData;
+  products?: Product[];
 }
 
-const TotalsSection = ({ quoteData }: TotalsSectionProps) => {
+const TotalsSection = ({ quoteData, products = [] }: TotalsSectionProps) => {
+  const getProductIgstRate = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    return product ? product.igstRate : 18;
+  };
+
   // Calculate amounts based on user specifications
   const calculateAmounts = () => {
     // Taxable Amount = sum of (rate * qty) for each product
@@ -16,10 +22,11 @@ const TotalsSection = ({ quoteData }: TotalsSectionProps) => {
     // Transportation charge (fixed at 0 as per template)
     const transportationCharge = 0;
 
-    // Calculate IGST for each product (18% of product total) and sum them
+    // Calculate IGST for each product using individual IGST rates and sum them
     const totalIgstAmount = quoteData.items.reduce((sum, item) => {
       const productTotal = item.price * item.quantity;
-      const igstAmount = (productTotal * 18) / 100;
+      const igstRate = getProductIgstRate(item.productId);
+      const igstAmount = (productTotal * igstRate) / 100;
       return sum + igstAmount;
     }, 0);
 

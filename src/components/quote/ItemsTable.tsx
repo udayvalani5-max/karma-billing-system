@@ -17,6 +17,16 @@ const ItemsTable = ({ quoteData, products }: ItemsTableProps) => {
     return product ? product.description : "";
   };
 
+  const getProductHsnSac = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    return product ? product.hsnSac : "7607";
+  };
+
+  const getProductIgstRate = (productId: string) => {
+    const product = products.find(p => p.id === productId);
+    return product ? product.igstRate : 18;
+  };
+
   return (
     <div className="items-section">
       <table className="items-table w-full border-collapse border border-gray-300">
@@ -34,7 +44,7 @@ const ItemsTable = ({ quoteData, products }: ItemsTableProps) => {
         </thead>
         <tbody>
           {quoteData.items.map((item, index) => {
-            const igstRate = 18;
+            const igstRate = getProductIgstRate(item.productId);
             const productTotal = item.price * item.quantity;
             const igstAmount = (productTotal * igstRate) / 100;
             const totalWithIgst = productTotal + igstAmount;
@@ -48,10 +58,10 @@ const ItemsTable = ({ quoteData, products }: ItemsTableProps) => {
                     <div className="text-sm text-gray-600">{getProductDescription(item.productId)}</div>
                   )}
                 </td>
-                <td className="border border-gray-300 p-3 text-center text-gray-900">7607</td>
+                <td className="border border-gray-300 p-3 text-center text-gray-900">{getProductHsnSac(item.productId)}</td>
                 <td className="border border-gray-300 p-3 text-center text-gray-900">{item.quantity} NOS</td>
                 <td className="border border-gray-300 p-3 text-right text-gray-900">₹{item.price.toFixed(2)}</td>
-                <td className="border border-gray-300 p-3 text-center text-gray-900">18.00</td>
+                <td className="border border-gray-300 p-3 text-center text-gray-900">{igstRate.toFixed(2)}</td>
                 <td className="border border-gray-300 p-3 text-right text-gray-900">₹{igstAmount.toFixed(2)}</td>
                 <td className="border border-gray-300 p-3 text-right font-semibold text-gray-900">₹{totalWithIgst.toFixed(2)}</td>
               </tr>

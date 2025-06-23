@@ -12,8 +12,10 @@ interface Product {
   id: string;
   name: string;
   description: string;
+  hsnSac: string;
   price: number;
   unit: string;
+  igstRate: number;
 }
 
 const ProductsManagement = () => {
@@ -23,14 +25,26 @@ const ProductsManagement = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    hsnSac: "",
     price: "",
     unit: "pcs",
+    igstRate: "18",
   });
 
   useEffect(() => {
     const saved = localStorage.getItem("products");
     if (saved) {
-      setProducts(JSON.parse(saved));
+      const parsedProducts = JSON.parse(saved);
+      // Handle backward compatibility
+      const updatedProducts = parsedProducts.map((product: any) => ({
+        ...product,
+        hsnSac: product.hsnSac || "7607",
+        igstRate: product.igstRate || 18
+      }));
+      setProducts(updatedProducts);
+      if (JSON.stringify(updatedProducts) !== JSON.stringify(parsedProducts)) {
+        localStorage.setItem("products", JSON.stringify(updatedProducts));
+      }
     }
   }, []);
 
@@ -46,8 +60,10 @@ const ProductsManagement = () => {
       id: isEditing || Date.now().toString(),
       name: formData.name,
       description: formData.description,
+      hsnSac: formData.hsnSac,
       price: parseFloat(formData.price),
       unit: formData.unit,
+      igstRate: parseFloat(formData.igstRate),
     };
 
     if (isEditing) {
@@ -59,7 +75,7 @@ const ProductsManagement = () => {
       toast({ title: "Product added successfully!" });
     }
 
-    setFormData({ name: "", description: "", price: "", unit: "pcs" });
+    setFormData({ name: "", description: "", hsnSac: "", price: "", unit: "pcs", igstRate: "18" });
     setIsEditing(null);
   };
 
@@ -67,8 +83,10 @@ const ProductsManagement = () => {
     setFormData({
       name: product.name,
       description: product.description,
+      hsnSac: product.hsnSac,
       price: product.price.toString(),
       unit: product.unit,
+      igstRate: product.igstRate.toString(),
     });
     setIsEditing(product.id);
   };
@@ -119,7 +137,18 @@ const ProductsManagement = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="hsnSac">HSN/SAC Code *</Label>
+                <Input
+                  id="hsnSac"
+                  value={formData.hsnSac}
+                  onChange={(e) => setFormData(prev => ({ ...prev, hsnSac: e.target.value }))}
+                  placeholder="HSN/SAC Code"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="price">Price *</Label>
                   <Input
@@ -141,6 +170,17 @@ const ProductsManagement = () => {
                     placeholder="pcs, kg, hrs"
                   />
                 </div>
+                <div>
+                  <Label htmlFor="igstRate">IGST Rate (%)</Label>
+                  <Input
+                    id="igstRate"
+                    type="number"
+                    step="0.01"
+                    value={formData.igstRate}
+                    onChange={(e) => setFormData(prev => ({ ...prev, igstRate: e.target.value }))}
+                    placeholder="18"
+                  />
+                </div>
               </div>
 
               <div className="flex gap-2">
@@ -153,7 +193,7 @@ const ProductsManagement = () => {
                     variant="outline" 
                     onClick={() => {
                       setIsEditing(null);
-                      setFormData({ name: "", description: "", price: "", unit: "pcs" });
+                      setFormData({ name: "", description: "", hsnSac: "", price: "", unit: "pcs", igstRate: "18" });
                     }}
                   >
                     Cancel
@@ -182,9 +222,13 @@ const ProductsManagement = () => {
                         {product.description && (
                           <p className="text-sm text-gray-600 mt-1">{product.description}</p>
                         )}
-                        <p className="text-lg font-bold text-blue-600 mt-2">
-                          ${product.price.toFixed(2)} / {product.unit}
-                        </p>
+                        <div className="mt-2 space-y-1">
+                          <p className="text-sm text-gray-600">HSN/SAC: {product.hsnSac}</p>
+                          <p className="text-lg font-bold text-blue-600">
+                            ₹{product.price.toFixed(2)} / {product.unit}
+                          </p>
+                          <p className="text-sm text-gray-600">IGST Rate: {product.igstRate}%</p>
+                        </div>
                       </div>
                       <div className="flex gap-2">
                         <Button

@@ -3,14 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle, Building } from "lucide-react";
 
 interface CompanyData {
   name: string;
-  address: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  pinCode: string;
   phone: string;
   email: string;
   website: string;
@@ -25,7 +27,10 @@ const FirstTimeSetup = ({ onComplete }: FirstTimeSetupProps) => {
   const { toast } = useToast();
   const [companyData, setCompanyData] = useState<CompanyData>({
     name: "",
-    address: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    pinCode: "",
     phone: "",
     email: "",
     website: "",
@@ -64,7 +69,7 @@ const FirstTimeSetup = ({ onComplete }: FirstTimeSetupProps) => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
             <Building className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to QuoteGen Pro!</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Karma Billing System!</h1>
           <p className="text-gray-600">Let's set up your company information to get started</p>
         </div>
 
@@ -103,16 +108,46 @@ const FirstTimeSetup = ({ onComplete }: FirstTimeSetupProps) => {
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="address">Address</Label>
-              <Textarea
-                id="address"
-                value={companyData.address}
-                onChange={(e) => handleChange("address", e.target.value)}
-                placeholder="Complete business address"
-                rows={3}
-                className="resize-none"
-              />
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900">Address Details</h3>
+              <div>
+                <Label htmlFor="streetAddress">Street Address</Label>
+                <Input
+                  id="streetAddress"
+                  value={companyData.streetAddress}
+                  onChange={(e) => handleChange("streetAddress", e.target.value)}
+                  placeholder="Street address"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="city">City</Label>
+                  <Input
+                    id="city"
+                    value={companyData.city}
+                    onChange={(e) => handleChange("city", e.target.value)}
+                    placeholder="City"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="state">State</Label>
+                  <Input
+                    id="state"
+                    value={companyData.state}
+                    onChange={(e) => handleChange("state", e.target.value)}
+                    placeholder="State"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="pinCode">Pin Code</Label>
+                  <Input
+                    id="pinCode"
+                    value={companyData.pinCode}
+                    onChange={(e) => handleChange("pinCode", e.target.value)}
+                    placeholder="Pin Code"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

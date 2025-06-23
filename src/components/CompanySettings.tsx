@@ -3,13 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 interface CompanyData {
   name: string;
-  address: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  pinCode: string;
   phone: string;
   email: string;
   website: string;
@@ -20,7 +22,10 @@ const CompanySettings = () => {
   const { toast } = useToast();
   const [companyData, setCompanyData] = useState<CompanyData>({
     name: "",
-    address: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    pinCode: "",
     phone: "",
     email: "",
     website: "",
@@ -30,7 +35,21 @@ const CompanySettings = () => {
   useEffect(() => {
     const saved = localStorage.getItem("companyData");
     if (saved) {
-      setCompanyData(JSON.parse(saved));
+      const parsedData = JSON.parse(saved);
+      // Handle backward compatibility with old address format
+      if (parsedData.address && !parsedData.streetAddress) {
+        const addressParts = parsedData.address.split('\n');
+        setCompanyData({
+          ...parsedData,
+          streetAddress: addressParts[0] || "",
+          city: "",
+          state: "",
+          pinCode: "",
+          address: undefined
+        });
+      } else {
+        setCompanyData(parsedData);
+      }
     }
   }, []);
 
@@ -82,16 +101,50 @@ const CompanySettings = () => {
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="address" className="text-sm lg:text-base">Address</Label>
-            <Textarea
-              id="address"
-              value={companyData.address}
-              onChange={(e) => handleChange("address", e.target.value)}
-              placeholder="Complete business address"
-              rows={3}
-              className="mt-1 resize-none"
-            />
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900">Address Details</h3>
+            <div>
+              <Label htmlFor="streetAddress" className="text-sm lg:text-base">Street Address</Label>
+              <Input
+                id="streetAddress"
+                value={companyData.streetAddress}
+                onChange={(e) => handleChange("streetAddress", e.target.value)}
+                placeholder="Street address"
+                className="mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="city" className="text-sm lg:text-base">City</Label>
+                <Input
+                  id="city"
+                  value={companyData.city}
+                  onChange={(e) => handleChange("city", e.target.value)}
+                  placeholder="City"
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="state" className="text-sm lg:text-base">State</Label>
+                <Input
+                  id="state"
+                  value={companyData.state}
+                  onChange={(e) => handleChange("state", e.target.value)}
+                  placeholder="State"
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="pinCode" className="text-sm lg:text-base">Pin Code</Label>
+                <Input
+                  id="pinCode"
+                  value={companyData.pinCode}
+                  onChange={(e) => handleChange("pinCode", e.target.value)}
+                  placeholder="Pin Code"
+                  className="mt-1"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
